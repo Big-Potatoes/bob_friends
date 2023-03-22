@@ -7,7 +7,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 100%; font-weight: var(--fw-base); font-family: var(--font-nexon);
     -webkit-tap-highlight-color: transparent;
   }
-  
+
   ol,ul {
     list-style: none;
   } 
