@@ -1,0 +1,29 @@
+@import url(font.css);
+:root {
+  /* font */
+  --font-ganpan: 'KCC-Ganpan';
+  --font-nexon: 'NEXON Lv1 Gothic OTF';
+
+  /* font size */
+  --fz-lg: 22px;
+  --fz-big: 18px;
+  --fz-base: 16px;
+  --fz-sm: 14px;
+  --fz-xs: 10px;
+
+  /* color */
+  --maincolor: #ff731d;
+  --ivory: #fff7e9;
+  --yellow-100: #ffcb42;
+  --yellow-200: #ffb200;
+  --skyblue: #5f9df7;
+  --navy: #1746a2;
+  --black-100: #dee2e5;
+  --black-200: #949ea6;
+  --black-300: #414141;
+  --modalBack: rgba(34, 34, 34, 0.7);
+
+  /* shadow */
+  --shadow: 0px 2px 8px 0px rgba(255, 255, 255, 0.4);
+  --effect-sd: 0 0 0 2em transparent;
+}
