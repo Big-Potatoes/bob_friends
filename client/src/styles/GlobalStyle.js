@@ -4,7 +4,7 @@ export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     margin: 0; padding: 0; border: none; background: none;
-    font-size: 100%; font-family: var(--font-nexon);
+    font-size: 100%; font-weight: var(--fw-base); font-family: var(--font-nexon);
     -webkit-tap-highlight-color: transparent;
   }
 
