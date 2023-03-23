@@ -2,7 +2,8 @@
 :root {
   /* font */
   --font-ganpan: 'KCC-Ganpan';
-  --font-nexon: 'NEXON Lv1 Gothic OTF';
+  --font-nexon: 'NexonLv1Gothic';
+  --font-dream: 'S-CoreDream-3Light';
 
   /* font size */
   --fz-lg: 22px;
@@ -10,6 +11,11 @@
   --fz-base: 16px;
   --fz-sm: 14px;
   --fz-xs: 10px;
+
+  /* font weight */
+  --fw-base: 300;
+  --fw-bold: 400;
+  --fw-strong: 600;
 
   /* color */
   --maincolor: #ff731d;
