@@ -16,10 +16,10 @@ export const Wrapper = styled.header`
     background: var(--yellow-100);
   }
 `
-export const LogoContainer = styled.img`
+export const LogoContainer = styled.h1`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 40px;
-  height: auto;
+  font-family: var(--font-ganpan);
+  font-size: var(--fz-lg);
 `

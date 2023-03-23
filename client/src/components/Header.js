@@ -15,7 +15,7 @@ const Header = () => {
 
   //* test용 state
   const testLogin = true
-  const testEdit = true
+  const testEdit = false
   const testRegion = true
 
   const LeftField = ({ setRegion, setIsEdit, setIsLogin }) => {
@@ -73,7 +73,9 @@ const Header = () => {
         src="/assets/logo.png"
         alt="header_logo"
         onClick={logoHandler}
-      />
+      >
+        밥친구
+      </LogoContainer>
       <RightField
         className="header_right"
         setIsEdit={setIsEdit}
