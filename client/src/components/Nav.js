@@ -1,36 +1,54 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react'
+import {
+  HiOutlinePencil,
+  HiOutlineWallet,
+  HiOutlineQueueList,
+  HiOutlineQuestionMarkCircle,
+} from 'react-icons/hi2'
+import { useLocation } from 'react-router-dom'
 import { LogoWrapper, MenuWrapper, Wrapper } from '../styles/nav'
 
 const Nav = () => {
-  const navigate = useNavigate()
-  const logoHandler = () => {
-    navigate('/')
-  }
-  const Tab = ({ content, icon }) => {
-    const [fill, setFill] = useState('none')
-    const onClickMenu = (e) => {
-      console.log(e.target)
-      setFill(`var(--maincolor)`)
-    }
+  const location = useLocation()
+  const Tab = ({ path, name, icon }) => {
+    console.log(location.pathname === path)
     return (
-      <MenuWrapper onClick={onClickMenu}>{`${content}, ${fill}`}</MenuWrapper>
+      <li className={name}>
+        <MenuWrapper
+          to={path}
+          className={path === location.pathname ? 'clicked' : null}
+        >
+          {icon}
+        </MenuWrapper>
+      </li>
     )
   }
   return (
-    <Wrapper className="nav">
-      <Tab className="menu_tab_1" content={'오늘뭐먹지?'} />
-      <Tab className="menu_tab_2" content={'게시판'} />
-      <MenuWrapper className="menu_tab_3 home" onClick={logoHandler}>
-        <LogoWrapper src="/assets/logo.png" alt="button_home" />
-      </MenuWrapper>
-      <Tab className="menu_tab_4" content={'충전'} />
-      <Tab
-        className="menu_tab_5"
-        content={'write'}
-        fileName={'http://www.w3.org/2000/svg'}
-      />
-    </Wrapper>
+    <nav className="nav">
+      <Wrapper className="menu_container">
+        <Tab
+          path={'/rullet'}
+          name={'menu_1 rullet'}
+          icon={<HiOutlineQuestionMarkCircle />}
+        />
+        <Tab
+          path={'/board'}
+          name={'menu_2 board'}
+          icon={<HiOutlineQueueList />}
+        />
+        <li className="menu_3 logo">
+          <MenuWrapper to={'/'}>
+            <LogoWrapper src="/assets/logo.png" alt="button_home" />
+          </MenuWrapper>
+        </li>
+        <Tab
+          path={'/recharge'}
+          name={'menu_4 recharge'}
+          icon={<HiOutlineWallet />}
+        />
+        <Tab path={'/write'} name={'menu_5 write'} icon={<HiOutlinePencil />} />
+      </Wrapper>
+    </nav>
   )
 }
 
