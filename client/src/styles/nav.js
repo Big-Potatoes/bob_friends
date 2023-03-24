@@ -31,7 +31,7 @@ export const MenuWrapper = styled(Link)`
     }
   }
   > * {
-    filter: drop-shadow(1px 3px 4px var(--black-100));
+    filter: drop-shadow(1px 4px 3px var(--black-100));
   }
 `
 export const LogoWrapper = styled.img`
