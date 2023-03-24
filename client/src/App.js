@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Join from './pages/Join'
 import Header from './components/Header'
 import Nav from './components/Nav'
+import Index from './pages/Index'
 
 function App() {
   // 맨 처음 앱을 실행하면 localStorage에 접속한 기록을 남겨둠
@@ -26,6 +27,7 @@ function App() {
             <Header>여기 헤더</Header>
             <Routes>
               <Route path="/join" element={<Join />} />
+              <Route path="/" element={<Index />} />
             </Routes>
             <Nav />
           </>
