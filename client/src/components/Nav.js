@@ -11,7 +11,6 @@ import { LogoWrapper, MenuWrapper, Wrapper, MenuTitle } from '../styles/nav'
 const Nav = () => {
   const location = useLocation()
   const Tab = ({ path, name, icon, menu }) => {
-    console.log(location.pathname === path)
     return (
       <li className={name}>
         <MenuWrapper
