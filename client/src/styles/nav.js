@@ -20,7 +20,10 @@ export const MenuWrapper = styled(Link)`
   justify-content: center;
   align-items: center;
   font-size: 35px;
-  &:active,
+  span {
+    margin-top: 5px;
+  }
+  span &:active,
   :hover {
     color: var(--yellow-200);
   }
