@@ -11,8 +11,9 @@ export const GlobalStyle = createGlobalStyle`
   ol,ul {
     list-style: none;
   } 
-  em {
+  strong {
     font-size: var(--fz-base);
+    font-weight: var(--fw-strong);
   }
   img {
     vertical-align: top;
