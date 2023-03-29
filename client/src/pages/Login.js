@@ -5,7 +5,13 @@ import {
   InputBase,
   ButtonBase,
 } from '../styles/common'
-import { Wrapper, InputContainer, CustomLink, AlertText } from '../styles/login'
+import {
+  Wrapper,
+  InputContainer,
+  CustomLink,
+  CustomSpan,
+  AlertText,
+} from '../styles/login'
 
 const Login = () => {
   return (
@@ -22,11 +28,11 @@ const Login = () => {
         <AlertText>아이디가 유효하지 않거나 잘못된 비밀번호 입니다.</AlertText>
         <ButtonBase>로그인</ButtonBase>
         <div className="join">
-          <span>아직 계정이 없나요?</span>
+          <CustomSpan>아직 계정이 없나요?</CustomSpan>
           <CustomLink to="/join">회원가입</CustomLink>
         </div>
         <div className="identify">
-          <span>아이디/비밀번호를 잊었나요?</span>
+          <CustomSpan>아이디/비밀번호를 잊었나요?</CustomSpan>
           <CustomLink to="identify">계정찾기</CustomLink>
         </div>
         <span>소셜로그인</span>

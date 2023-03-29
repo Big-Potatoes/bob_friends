@@ -26,3 +26,6 @@ export const CustomLink = styled(Link)`
     color: var(--maincolor);
   }
 `
+export const CustomSpan = styled.span`
+  color: var(--black-100);
+`
