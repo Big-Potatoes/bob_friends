@@ -17,6 +17,11 @@ export const InputBase = styled.input`
   border-radius: 5px;
   padding: 3px;
 `
+export const InputLabel = styled.label`
+  font-weight: var(--fw-bold);
+  margin-right: 10px;
+  width: 80px;
+`
 
 // button
 export const ButtonBase = styled.button`
