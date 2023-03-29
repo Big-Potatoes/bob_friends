@@ -17,10 +17,16 @@ export const InputBase = styled.input`
   border-radius: 5px;
   padding: 3px;
 `
+export const InputLabel = styled.label`
+  font-weight: var(--fw-bold);
+  margin-right: 10px;
+  width: 80px;
+`
 
 // button
 export const ButtonBase = styled.button`
   width: ${(props) => props.width || '150px'};
+  margin: ${(props) => props.margin || '0px'};
   min-width: 150px;
   height: 40px;
   font-weight: var(--fw-strong);
@@ -90,14 +96,14 @@ export const Tag = styled.div`
 `
 
 // content
-export const Title = styled.h3`
-  font-weight: var(--fw-strong);
-  font-size: var(--fz-lg);
-`
 export const ListTitle = styled.h4`
   font-weight: var(--fw-strong);
   font-size: var(--fz-big);
 `
 export const ListContent = styled.p`
   font-size: var(--fz-base);
+`
+export const Title = styled.h3`
+  font-weight: var(--fw-strong);
+  font-size: var(--fz-lg);
 `
