@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
-  margin: 0 10px 10px 10px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   > svg {
