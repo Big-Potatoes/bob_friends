@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 import './variable.css'
 // layout
-export const OuterWrapper = styled.div`
+export const OuterWrapper = styled.main`
   width: 100%;
-  padding: 0px 15px;
-  margin: 0 auto;
+  height: calc(100vh - 50px - 80px);
+  overflow: auto;
+  padding: 15px 15px;
+  margin: 50px 0 0 0;
 `
 
 // input
