@@ -11,8 +11,8 @@ export const OuterWrapper = styled.main`
 
 // input
 export const InputBase = styled.input`
-  width: ${(props) => props.width || '150px'};
-  height: auto;
+  width: ${(props) => props.width || '200px'};
+  height: 35px;
   border: 1px solid var(--black-100);
   border-radius: 5px;
   padding: 3px;
