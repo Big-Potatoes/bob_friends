@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { OuterWrapper } from '../styles/common'
-import { MainWrapper, BannerWrapper } from '../styles/index'
+import { OuterWrapper } from '../styles/s-global/common'
+import { MainWrapper, BannerWrapper } from '../styles/s-pages/index'
 import Search from '../components/Search'
 import ListContent from '../components/ListContent'
 import { api } from '../api/api'
