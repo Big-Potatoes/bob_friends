@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { InputBase } from '../styles/common'
-import { Wrapper } from '../styles/search'
+import { InputBase } from '../styles/s-global/common'
+import { Wrapper } from '../styles/s-components/search'
 import { CiSearch } from 'react-icons/ci'
 
 const Search = () => {

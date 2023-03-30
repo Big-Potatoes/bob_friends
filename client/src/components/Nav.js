@@ -6,7 +6,12 @@ import {
   HiOutlineChatBubbleLeftRight,
 } from 'react-icons/hi2'
 import { useLocation } from 'react-router-dom'
-import { LogoWrapper, MenuWrapper, Wrapper, MenuTitle } from '../styles/nav'
+import {
+  LogoWrapper,
+  MenuWrapper,
+  Wrapper,
+  MenuTitle,
+} from '../styles/s-components/nav'
 
 const Nav = () => {
   const location = useLocation()

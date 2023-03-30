@@ -9,7 +9,7 @@ import {
   PeopleCountWrapper,
   ChartWrapper,
   CountNum,
-} from '../styles/listcontent'
+} from '../styles/s-components/listcontent'
 import PeopleCountPie from './PeopleCountPie'
 const ListContent = ({ content }) => {
   const {
