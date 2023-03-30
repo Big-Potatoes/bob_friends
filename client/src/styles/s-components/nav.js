@@ -47,4 +47,5 @@ export const LogoWrapper = styled.img`
 export const MenuTitle = styled.span`
   font-size: var(--fz-xs);
   font-weight: var(--fw-bold);
+  letter-spacing: -2px;
 `

@@ -4,14 +4,14 @@ import {
   InputLabel,
   InputBase,
   ButtonBase,
-} from '../styles/common'
+} from '../styles/s-global/common'
 import {
   Wrapper,
   InputContainer,
   CustomLink,
   CustomSpan,
   AlertText,
-} from '../styles/login'
+} from '../styles/s-pages/login'
 
 const Login = () => {
   const [isValid, setIsValid] = useState(true)
