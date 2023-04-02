@@ -24,6 +24,13 @@ export const AlertText = styled.p`
   left: 50%;
   transform: translateX(-50%);
 `
+export const BottomWrapper = styled.div`
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+`
 export const CustomLink = styled(Link)`
   color: var(--maincolor);
   font-weight: var(--fw-strong);

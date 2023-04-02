@@ -11,10 +11,11 @@ import {
   CustomLink,
   CustomSpan,
   AlertText,
+  BottomWrapper,
 } from '../styles/s-pages/login'
 
 const Login = () => {
-  const [isValid, setIsValid] = useState(true)
+  const [isValid, setIsValid] = useState(false)
   const checkValid = () => {
     // 로그인 버튼 누르면 서버에 post 요청 -> 회원 정보 상태에 따라 isValid 변경
     setIsValid(true)
@@ -38,14 +39,14 @@ const Login = () => {
         <ButtonBase margin={'60px 0'} onClick={checkValid}>
           로그인
         </ButtonBase>
-        <div className="join">
+        <BottomWrapper className="join">
           <CustomSpan>아직 계정이 없나요?</CustomSpan>
           <CustomLink to="/join">회원가입</CustomLink>
-        </div>
-        <div className="identify">
+        </BottomWrapper>
+        <BottomWrapper className="identify">
           <CustomSpan>아이디/비밀번호를 잊었나요?</CustomSpan>
           <CustomLink to="identify">계정찾기</CustomLink>
-        </div>
+        </BottomWrapper>
         <span>소셜로그인</span>
       </Wrapper>
     </OuterWrapper>
