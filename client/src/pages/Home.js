@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Loading from '../components/Loading'
-import { Wrapper, LogoWrapper, LogoText } from '../styles/home'
+import { Wrapper, LogoWrapper, LogoText } from '../styles/s-pages/home'
 
 const Home = ({ setFlag }) => {
   useEffect(() => {

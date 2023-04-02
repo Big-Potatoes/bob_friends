@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './styles/variable.css'
-import { GlobalStyle } from './styles/GlobalStyle'
+import './styles/s-global/variable.css'
+import { GlobalStyle } from './styles/s-global/GlobalStyle'
 import Home from './pages/Home'
 import Join from './pages/Join'
 import Header from './components/Header'
 import Nav from './components/Nav'
 import Index from './pages/Index'
+import Login from './pages/Login'
+import Detail from './pages/Detail'
 
 function App() {
   // 맨 처음 앱을 실행하면 localStorage에 접속한 기록을 남겨둠
@@ -26,8 +28,10 @@ function App() {
           <>
             <Header>여기 헤더</Header>
             <Routes>
-              <Route path="/join" element={<Join />} />
               <Route path="/" element={<Index />} />
+              <Route path="join" element={<Join />} />
+              <Route path="login" element={<Login />} />
+              <Route path="detail" element={<Detail />} />
             </Routes>
             <Nav />
           </>

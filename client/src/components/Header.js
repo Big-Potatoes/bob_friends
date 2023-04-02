@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Wrapper, LogoContainer } from '../styles/header'
+import { Link, useNavigate } from 'react-router-dom'
+import { Wrapper, LogoContainer } from '../styles/s-components/header'
 //* header에 있어야 할 기능
 // center - 로고 : 클릭하면 index로 이동
 
@@ -14,7 +14,7 @@ const Header = () => {
   const [isLogin, setIsLogin] = useState(true)
 
   //* test용 state
-  const testLogin = true
+  const testLogin = false
   const testEdit = false
   const testRegion = true
 
@@ -56,7 +56,15 @@ const Header = () => {
     }, [])
     return (
       <div className="header_right">
-        {isLogin ? isEdit ? <p>완료</p> : <p>myPage</p> : <p>login</p>}
+        {isLogin ? (
+          isEdit ? (
+            <p>완료</p>
+          ) : (
+            <p>myPage</p>
+          )
+        ) : (
+          <Link to="/login">login</Link>
+        )}
       </div>
     )
   }
