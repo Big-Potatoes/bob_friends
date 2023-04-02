@@ -23,7 +23,7 @@ const ListContent = ({ content }) => {
     tags,
     writer,
   } = content
-  const data = [
+  const chartData = [
     {
       id: 'peopleCount',
       value: peopleCount,
@@ -58,7 +58,7 @@ const ListContent = ({ content }) => {
       </ContentWrapper>
       <PeopleCountWrapper className="people_count">
         <ChartWrapper className="chart_wrapper">
-          <PeopleCountPie clasName="chart" data={data} />
+          <PeopleCountPie clasName="chart" data={chartData} />
           <CountNum className="chart_summary">{`${peopleCount}/${totalPeopleCount}`}</CountNum>
         </ChartWrapper>
       </PeopleCountWrapper>

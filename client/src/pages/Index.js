@@ -19,11 +19,10 @@ const Index = () => {
         if (res.data.first) {
           setPins(res.data.content)
         } else setPins((prev) => [...prev, ...res.data.content])
-        setIsLoading(false)
         //* 마지막 page 일 때
         if (res.data.last) {
           setIsLoading(true)
-        }
+        } else setIsLoading(false)
       })
   }
   const loadMore = () => {
