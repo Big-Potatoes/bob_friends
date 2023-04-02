@@ -1,9 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { OuterWrapper } from '../styles/s-global/common'
-import { MainWrapper, BannerWrapper, Target } from '../styles/s-pages/index'
+import {
+  MainWrapper,
+  BannerWrapper,
+  TargetWrapper,
+} from '../styles/s-pages/index'
 import Search from '../components/Search'
 import ListContent from '../components/ListContent'
 import { api } from '../api/api'
+import { Oval } from 'react-loader-spinner'
 const Index = () => {
   const PAGE_SIZE = 5
   const pageEnd = useRef()
@@ -36,7 +41,7 @@ const Index = () => {
             loadMore()
           }
         },
-        { threshold: 0.5 }
+        { threshold: 1 }
       )
       // 옵저버 탐색 시작
       observer.observe(pageEnd.current)
@@ -73,9 +78,17 @@ const Index = () => {
             ) : (
               <p>로딩중</p>
             )}
-            <Target className="target" ref={pageEnd}>
-              target
-            </Target>
+            <TargetWrapper className="target" ref={pageEnd}>
+              <Oval
+                width={40}
+                height={40}
+                color={'var(--black-100)'}
+                ariaLabel="loading"
+                secondaryColor={'var(--black-200)'}
+                strokeWidth={3}
+                strokeWidthSecondary={3}
+              />
+            </TargetWrapper>
           </ul>
         </section>
       </MainWrapper>

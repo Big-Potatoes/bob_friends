@@ -15,7 +15,8 @@ export const BannerWrapper = styled.div`
   color: white;
   font-weight: var(--fw-bold);
 `
-export const Target = styled.div`
-  background: var(--maincolor);
-  height: 100px;
+export const TargetWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
