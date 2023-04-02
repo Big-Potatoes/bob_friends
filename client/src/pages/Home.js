@@ -6,7 +6,7 @@ const Home = ({ setFlag }) => {
   useEffect(() => {
     setTimeout(() => {
       localStorage.setItem('bob_friends', true)
-      setFlag(true)
+      setFlag(localStorage.getItem('bob_friends'))
     }, 5000)
   }, [])
   return (
