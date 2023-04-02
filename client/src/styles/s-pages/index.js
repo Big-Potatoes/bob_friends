@@ -15,3 +15,7 @@ export const BannerWrapper = styled.div`
   color: white;
   font-weight: var(--fw-bold);
 `
+export const Target = styled.div`
+  background: var(--maincolor);
+  height: 100px;
+`
