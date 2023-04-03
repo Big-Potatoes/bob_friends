@@ -4,9 +4,9 @@ import { Wrapper, LogoWrapper, LogoText } from '../styles/s-pages/home'
 
 const Home = ({ setFlag }) => {
   useEffect(() => {
-    setTimeout(() => {
+    setTimeout(async () => {
       localStorage.setItem('bob_friends', true)
-      setFlag(localStorage.getItem('bob_friends'))
+      await setFlag(localStorage.getItem('bob_friends'))
     }, 5000)
   }, [])
   return (
