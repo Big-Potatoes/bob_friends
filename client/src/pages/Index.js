@@ -78,18 +78,21 @@ const Index = () => {
             ) : (
               <p>로딩중</p>
             )}
-            <TargetWrapper className="target" ref={pageEnd}>
-              <Oval
-                width={40}
-                height={40}
-                color={'var(--black-100)'}
-                ariaLabel="loading"
-                secondaryColor={'var(--black-200)'}
-                strokeWidth={3}
-                strokeWidthSecondary={3}
-              />
-            </TargetWrapper>
           </ul>
+          <TargetWrapper
+            className={`target ${isLoading ? 'none' : null}`}
+            ref={pageEnd}
+          >
+            <Oval
+              width={40}
+              height={40}
+              color={'var(--black-100)'}
+              ariaLabel="loading"
+              secondaryColor={'var(--black-200)'}
+              strokeWidth={3}
+              strokeWidthSecondary={3}
+            />
+          </TargetWrapper>
         </section>
       </MainWrapper>
     </OuterWrapper>
