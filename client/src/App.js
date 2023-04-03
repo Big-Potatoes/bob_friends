@@ -8,7 +8,7 @@ import Header from './components/Header'
 import Nav from './components/Nav'
 import Index from './pages/Index'
 import Login from './pages/Login'
-import Detail from './pages/Detail'
+import Content from './pages/Content'
 
 function App() {
   // 맨 처음 앱을 실행하면 localStorage에 접속한 기록을 남겨둠
@@ -31,7 +31,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="join" element={<Join />} />
               <Route path="login" element={<Login />} />
-              <Route path="detail" element={<Detail />} />
+              <Route path="content" element={<Content />} />
             </Routes>
             <Nav />
           </>
