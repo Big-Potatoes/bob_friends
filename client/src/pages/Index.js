@@ -4,6 +4,7 @@ import {
   MainWrapper,
   BannerWrapper,
   TargetWrapper,
+  EmptyContainer,
 } from '../styles/s-pages/index'
 import Search from '../components/Search'
 import ListContent from '../components/ListContent'
@@ -14,27 +15,30 @@ const Index = () => {
   const pageEnd = useRef()
   const [page, setPage] = useState(1)
   const [pins, setPins] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [isEmpty, setIsEmpty] = useState(true)
   const fetchPins = (page) => {
     api
       .get(`/recruit-contents?pageNumber=${page}&pageSize=${PAGE_SIZE}`)
       .then((res) => {
         // console.log('응답 데이터 ::::::', res.data)
+        //* 검색어, 지역 등에 해당하는 데이터가 없을 때
+        setIsEmpty(res.data.numberOfElements === 0)
         //* page가 첫 페이지일 때
         if (res.data.first) {
           setPins(res.data.content)
         } else setPins((prev) => [...prev, ...res.data.content])
         //* 마지막 page 일 때
         if (res.data.last) {
-          setIsLoading(true)
-        } else setIsLoading(false)
+          setLoading(false)
+        } else setLoading(true)
       })
   }
   const loadMore = () => {
     setPage((prev) => prev + 1)
   }
   useEffect(() => {
-    if (!isLoading) {
+    if (loading) {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
@@ -47,7 +51,7 @@ const Index = () => {
       observer.observe(pageEnd.current)
       return () => observer && observer.disconnect()
     }
-  }, [isLoading])
+  }, [loading])
   useEffect(() => {
     fetchPins(page)
   }, [page])
@@ -65,7 +69,7 @@ const Index = () => {
             </p>
           </BannerWrapper>
           <ul className="content_list">
-            {pins.length !== 0 ? (
+            {!isEmpty ? (
               pins.map((el, idx) => {
                 return (
                   <ListContent
@@ -76,11 +80,14 @@ const Index = () => {
                 )
               })
             ) : (
-              <p>로딩중</p>
+              <EmptyContainer className="empty_container">
+                <p>등록된 게시글이 없습니다. 🥲</p>
+                <p>첫 번째 게시글의 주인공이 되어보세요!</p>
+              </EmptyContainer>
             )}
           </ul>
           <TargetWrapper
-            className={`target ${isLoading ? 'none' : null}`}
+            className={`target ${!loading ? 'none' : null}`}
             ref={pageEnd}
           >
             <Oval
