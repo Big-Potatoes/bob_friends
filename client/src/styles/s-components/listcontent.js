@@ -5,10 +5,10 @@ export const Wrapper = styled.li`
   height: 100px;
   /* background: gray; */
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 10px;
-  /* border-bottom: 0.5px solid var(--black-200); */
+  padding: 0 10px;
 `
 export const ContentWrapper = styled.div`
   display: flex;
@@ -41,24 +41,5 @@ export const Tag = styled.span`
   align-items: center;
   color: white;
   font-size: var(--fz-xs);
-  font-weight: var(--fw-bold);
-`
-export const PeopleCountWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  height: 100%;
-`
-export const ChartWrapper = styled.div`
-  width: 60px;
-  height: 30px;
-  margin-top: 10px;
-`
-export const CountNum = styled.span`
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: var(--fz-sm);
   font-weight: var(--fw-bold);
 `

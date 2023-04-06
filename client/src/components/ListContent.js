@@ -7,9 +7,6 @@ import {
   Author,
   TagContainer,
   Tag,
-  PeopleCountWrapper,
-  ChartWrapper,
-  CountNum,
 } from '../styles/s-components/listcontent'
 import PeopleCountPie from './PeopleCountPie'
 const ListContent = ({ content }) => {
@@ -38,7 +35,7 @@ const ListContent = ({ content }) => {
   const onClickItem = (e, id) => {
     // 이 게시글의 고유 아이디 받아서 detail?id= 로 보내야함
     console.log(e, id)
-    navigate(`/detail?id=${id}`)
+    navigate(`/content?id=${id}`)
   }
   return (
     <Wrapper className={`content${id}`} onClick={(e) => onClickItem(e, id)}>
@@ -56,12 +53,12 @@ const ListContent = ({ content }) => {
           })}
         </TagContainer>
       </ContentWrapper>
-      <PeopleCountWrapper className="people_count">
-        <ChartWrapper className="chart_wrapper">
-          <PeopleCountPie clasName="chart" data={chartData} />
-          <CountNum className="chart_summary">{`${peopleCount}/${totalPeopleCount}`}</CountNum>
-        </ChartWrapper>
-      </PeopleCountWrapper>
+      <PeopleCountPie
+        clasName="chart"
+        data={chartData}
+        peopleCount={peopleCount}
+        totalPeopleCount={totalPeopleCount}
+      />
     </Wrapper>
   )
 }
