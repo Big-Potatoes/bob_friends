@@ -35,7 +35,7 @@ const ListContent = ({ content }) => {
   const onClickItem = (e, id) => {
     // 이 게시글의 고유 아이디 받아서 detail?id= 로 보내야함
     console.log(e, id)
-    navigate(`/content?id=${id}`)
+    navigate(`/content/${id}`)
   }
   return (
     <Wrapper className={`content${id}`} onClick={(e) => onClickItem(e, id)}>
