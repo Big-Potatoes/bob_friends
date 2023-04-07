@@ -1,27 +1,60 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { OuterWrapper } from '../styles/s-global/common'
-import { MainWrapper, BannerWrapper } from '../styles/s-pages/index'
+import {
+  MainWrapper,
+  BannerWrapper,
+  TargetWrapper,
+  EmptyContainer,
+} from '../styles/s-pages/index'
 import Search from '../components/Search'
 import ListContent from '../components/ListContent'
 import { api } from '../api/api'
+import { Oval } from 'react-loader-spinner'
 const Index = () => {
   const PAGE_SIZE = 5
-  const [pageNumber, setPageNumber] = useState(1)
-  const [list, setList] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const scrollHandler = () => {
-    setPageNumber(pageNumber + 1)
-    setIsLoading(false)
+  const pageEnd = useRef()
+  const [page, setPage] = useState(1)
+  const [pins, setPins] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [isEmpty, setIsEmpty] = useState(true)
+  const fetchPins = (page) => {
+    api
+      .get(`/recruit-contents?pageNumber=${page}&pageSize=${PAGE_SIZE}`)
+      .then((res) => {
+        // console.log('응답 데이터 ::::::', res.data)
+        //* 검색어, 지역 등에 해당하는 데이터가 없을 때
+        setIsEmpty(res.data.numberOfElements === 0)
+        //* page가 첫 페이지일 때
+        if (res.data.first) {
+          setPins(res.data.content)
+        } else setPins((prev) => [...prev, ...res.data.content])
+        //* 마지막 page 일 때
+        if (res.data.last) {
+          setLoading(false)
+        } else setLoading(true)
+      })
+  }
+  const loadMore = () => {
+    setPage((prev) => prev + 1)
   }
   useEffect(() => {
-    api
-      .get(`/recruit-contents?pageNumber=${pageNumber}&pageSize=${PAGE_SIZE}`)
-      .then((res) => {
-        setList(res.data.content)
-        scrollHandler()
-      })
-  }, [])
-  console.log('렌더링::::::::::::::::::', pageNumber, list, isLoading)
+    if (loading) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadMore()
+          }
+        },
+        { threshold: 1 }
+      )
+      // 옵저버 탐색 시작
+      observer.observe(pageEnd.current)
+      return () => observer && observer.disconnect()
+    }
+  }, [loading])
+  useEffect(() => {
+    fetchPins(page)
+  }, [page])
   return (
     <OuterWrapper>
       <MainWrapper className="landing_page">
@@ -36,8 +69,8 @@ const Index = () => {
             </p>
           </BannerWrapper>
           <ul className="content_list">
-            {!isLoading ? (
-              list.map((el, idx) => {
+            {!isEmpty ? (
+              pins.map((el, idx) => {
                 return (
                   <ListContent
                     className={`content${idx + 1}`}
@@ -47,9 +80,26 @@ const Index = () => {
                 )
               })
             ) : (
-              <p>로딩중</p>
+              <EmptyContainer className="empty_container">
+                <p>등록된 게시글이 없습니다. 🥲</p>
+                <p>첫 번째 게시글의 주인공이 되어보세요!</p>
+              </EmptyContainer>
             )}
           </ul>
+          <TargetWrapper
+            className={`target ${!loading ? 'none' : null}`}
+            ref={pageEnd}
+          >
+            <Oval
+              width={40}
+              height={40}
+              color={'var(--black-100)'}
+              ariaLabel="loading"
+              secondaryColor={'var(--black-200)'}
+              strokeWidth={3}
+              strokeWidthSecondary={3}
+            />
+          </TargetWrapper>
         </section>
       </MainWrapper>
     </OuterWrapper>
