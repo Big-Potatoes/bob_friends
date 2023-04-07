@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+
 export const Wrapper = styled.form`
   display: flex;
   flex-direction: column;
@@ -18,6 +19,7 @@ export const AlertText = styled.p`
   color: ${(props) => props.color || 'var(--maincolor)'};
   font-size: var(--fz-sm);
   font-weight: var(--fw-bold);
+  line-height: 1.3;
   /* position: absolute; */
   /* top: calc(100% + 10px); */
   /* left: 50%;
