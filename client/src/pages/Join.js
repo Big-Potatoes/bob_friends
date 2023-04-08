@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/api'
@@ -80,14 +79,16 @@ const Join = () => {
           }
         })
         .catch((error) => {
-          setErrorMessage({
-            ...errorMessage,
-            account: '이미 가입된 아이디입니다.',
-          })
-          setValidation({
-            ...validation,
-            account: false,
-          })
+          if (error) {
+            setErrorMessage({
+              ...errorMessage,
+              account: '이미 가입된 아이디입니다.',
+            })
+            setValidation({
+              ...validation,
+              account: false,
+            })
+          }
         })
     }
   }
