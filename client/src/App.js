@@ -8,13 +8,13 @@ import Header from './components/Header'
 import Nav from './components/Nav'
 import Index from './pages/Index'
 import Login from './pages/Login'
-import Detail from './pages/Detail'
+import Content from './pages/Content'
 
 function App() {
   // 맨 처음 앱을 실행하면 localStorage에 접속한 기록을 남겨둠
   // 랜딩시 접속 기록이 있으면 바로 어플로 접속
   // 접속 기록이 없으면 로고 노출 페이지 보여주기
-  const [flag, setFlag] = useState(localStorage.getItem('bob_fridens' || false))
+  const [flag, setFlag] = useState(localStorage.getItem('bob_fridens') || false)
   useEffect(() => {
     setFlag(localStorage.getItem('bob_friends'))
   }, [])
@@ -31,7 +31,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="join" element={<Join />} />
               <Route path="login" element={<Login />} />
-              <Route path="detail" element={<Detail />} />
+              <Route path="content" element={<Content />} />
             </Routes>
             <Nav />
           </>
