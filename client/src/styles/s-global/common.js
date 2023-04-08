@@ -46,7 +46,7 @@ export const ButtonBase = styled.button`
 export const ButtonSm = styled.button`
   width: ${(props) => props.width || '80px'};
   min-width: 80px;
-  height: 40px;
+  height: '40px';
   font-weight: var(--fw-bold);
   font-size: var(--fz-sm);
   color: white;
@@ -130,16 +130,4 @@ export const ModalContent = styled.div`
   background: ${(props) => props.bg || 'white'};
   border-radius: 3px;
   z-index: 10;
-`
-// content
-export const ListTitle = styled.h4`
-  font-weight: var(--fw-strong);
-  font-size: var(--fz-big);
-`
-export const ListContent = styled.p`
-  font-size: var(--fz-base);
-`
-export const Title = styled.h3`
-  font-weight: var(--fw-strong);
-  font-size: var(--fz-lg);
 `
