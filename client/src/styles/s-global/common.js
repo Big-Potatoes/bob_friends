@@ -134,15 +134,3 @@ export const ModalContent = styled.div`
     line-height: 1.3;
   }
 `
-// content
-export const ListTitle = styled.h4`
-  font-weight: var(--fw-strong);
-  font-size: var(--fz-big);
-`
-export const ListContent = styled.p`
-  font-size: var(--fz-base);
-`
-export const Title = styled.h3`
-  font-weight: var(--fw-strong);
-  font-size: var(--fz-lg);
-`
