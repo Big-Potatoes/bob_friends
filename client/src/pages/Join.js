@@ -6,6 +6,10 @@ import {
   InputBase,
   InputLabel,
   ButtonBase,
+  ModalWrap,
+  ModalBack,
+  ModalContent,
+  ButtonSm,
 } from '../styles/s-global/common'
 import { Wrapper, InputContainer, AlertText } from '../styles/s-pages/join'
 const Join = () => {
@@ -183,9 +187,14 @@ const Join = () => {
       pw: userInfo.pw,
     }
     console.log('api post 요청', data)
+    setModalOpen(true)
     setTimeout(() => {
-      navigate('/login')
+      // navigate('/login')
+      // setModalOpen(false)
     }, 2000)
+  }
+  const onClickCloseModal = () => {
+    navigate('/login')
   }
   return (
     <OuterWrapper>
@@ -245,6 +254,17 @@ const Join = () => {
           회원가입
         </ButtonBase>
       </Wrapper>
+      {modalOpen ? (
+        <ModalBack>
+          <ModalContent>
+            <p>회원가입이 완료되었습니다.</p>
+            <p>잠시 후 로그인 화면으로 이동합니다.</p>
+            <ButtonSm height={'30px'} onClick={onClickCloseModal}>
+              확인
+            </ButtonSm>
+          </ModalContent>
+        </ModalBack>
+      ) : null}
     </OuterWrapper>
   )
 }
