@@ -5,13 +5,17 @@ import {
   OuterWrapper,
   InputBase,
   InputLabel,
-  ButtonBase,
-  ModalWrap,
   ModalBack,
   ModalContent,
-  ButtonSm,
 } from '../styles/s-global/common'
-import { Wrapper, InputContainer, AlertText } from '../styles/s-pages/join'
+import {
+  Wrapper,
+  InputContainer,
+  AlertText,
+  JoinButton,
+  ModalText,
+  CloseModalButton,
+} from '../styles/s-pages/join'
 const Join = () => {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState({
@@ -24,6 +28,7 @@ const Join = () => {
     id: '',
     pw: '',
     pwConfirm: '',
+    status: `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`,
   })
   const [validation, setValidation] = useState({
     id: false,
@@ -176,6 +181,7 @@ const Join = () => {
       validatePwConfirm(pwConfirm)
     }
   }
+  const testApi = false
   const submitUserInfo = (e) => {
     //* id, nickname, pw, pwConfirm 값이 전부 입력되고
     // 유효성 검사를 다 마쳤는지 확인해서
@@ -187,14 +193,27 @@ const Join = () => {
       pw: userInfo.pw,
     }
     console.log('api post 요청', data)
+    if (!testApi) {
+      setErrorMessage({
+        ...errorMessage,
+        status: `네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해 주세요.`,
+      })
+    }
     setModalOpen(true)
-    setTimeout(() => {
-      // navigate('/login')
-      // setModalOpen(false)
-    }, 2000)
+    // setTimeout(() => {
+    //   navigate('/login')
+    // }, 2000)
   }
   const onClickCloseModal = () => {
-    navigate('/login')
+    if (
+      errorMessage.status ===
+      `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`
+    ) {
+      console.log('login으로 이동')
+      // navigate('/login')
+    } else {
+      setModalOpen(false)
+    }
   }
   return (
     <OuterWrapper>
@@ -210,7 +229,7 @@ const Join = () => {
           />
         </InputContainer>
         <AlertText>{errorMessage.id}</AlertText>
-        <InputContainer className="input_nickname">
+        <InputContainer className="input_nickname" margin={'0 0 18px 0'}>
           <InputLabel htmlFor="id">닉네임</InputLabel>
           <InputBase
             type="text"
@@ -246,22 +265,21 @@ const Join = () => {
           />
         </InputContainer>
         <AlertText>{errorMessage.pwConfirm}</AlertText>
-        <ButtonBase
+        <JoinButton
           type="submit"
           className={isAllcheck ? null : 'disabled'}
           disabled={!isAllcheck}
         >
           회원가입
-        </ButtonBase>
+        </JoinButton>
       </Wrapper>
       {modalOpen ? (
         <ModalBack>
           <ModalContent>
-            <p>회원가입이 완료되었습니다.</p>
-            <p>잠시 후 로그인 화면으로 이동합니다.</p>
-            <ButtonSm height={'30px'} onClick={onClickCloseModal}>
+            <ModalText>{errorMessage.status}</ModalText>
+            <CloseModalButton onClick={onClickCloseModal}>
               확인
-            </ButtonSm>
+            </CloseModalButton>
           </ModalContent>
         </ModalBack>
       ) : null}

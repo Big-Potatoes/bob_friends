@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ButtonBase, ButtonSm } from '../s-global/common'
 
 export const Wrapper = styled.form`
   display: flex;
@@ -18,8 +19,22 @@ export const InputContainer = styled.div`
 export const AlertText = styled.p`
   width: ${(props) => props.width || 'max-content'};
   color: ${(props) => props.color || 'var(--maincolor)'};
-  font-size: var(--fz-sm);
+  font-size: var(--fz-xs);
   font-weight: var(--fw-bold);
   line-height: 1.3;
   min-height: 18px;
+`
+export const ModalText = styled.pre`
+  text-align: center;
+  white-space: pre-line;
+  word-break: break-all;
+  overflow: auto;
+  line-height: 1.3;
+`
+export const JoinButton = styled(ButtonBase)`
+  margin-top: 50px;
+`
+export const CloseModalButton = styled(ButtonSm)`
+  margin-top: 10px;
+  height: 30px;
 `
