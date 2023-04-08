@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -181,7 +180,9 @@ const Join = () => {
       validatePwConfirm(pwConfirm)
     }
   }
+  // Todo: api 붙이면 수정해야 함
   const testApi = false
+
   const submitUserInfo = (e) => {
     //* id, nickname, pw, pwConfirm 값이 전부 입력되고
     // 유효성 검사를 다 마쳤는지 확인해서
@@ -200,17 +201,16 @@ const Join = () => {
       })
     }
     setModalOpen(true)
-    // setTimeout(() => {
-    //   navigate('/login')
-    // }, 2000)
+    setTimeout(() => {
+      navigate('/login')
+    }, 2500)
   }
   const onClickCloseModal = () => {
     if (
       errorMessage.status ===
       `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`
     ) {
-      console.log('login으로 이동')
-      // navigate('/login')
+      navigate('/login')
     } else {
       setModalOpen(false)
     }
