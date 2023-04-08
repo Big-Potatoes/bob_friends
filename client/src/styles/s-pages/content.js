@@ -117,6 +117,10 @@ export const ContentAreaBox = styled.div`
     margin: 15px 0;
     position: relative;
   }
+  .slide-img {
+    width: 100%;
+    object-fit: cover;
+  }
 `
 export const Tooltip = styled.span`
   color: var(--navy);
@@ -156,4 +160,8 @@ export const MenuStatus = styled(ButtonSm)`
   height: 28px;
   margin-top: 15px;
 `
-export const PickupImages = styled.div``
+export const PickupImages = styled.div`
+  width: 100%;
+  padding-bottom: 100%;
+  height: 0;
+`

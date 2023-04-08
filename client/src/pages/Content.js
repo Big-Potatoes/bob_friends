@@ -1,8 +1,10 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { api } from '../api/api'
 import { OuterWrapper, Tag, ButtonSm } from '../styles/s-global/common'
 import { FaQuestionCircle } from 'react-icons/fa'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
 import {
   TagWrap,
   ContentHead,
@@ -35,6 +37,17 @@ const Content = () => {
   const [contentData, setContentData] = useState([])
   const [recruitEnd, setRecruitEnd] = useState(false)
   const currentTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
+  const [swiper, setSwiper] = useState(null)
+  const [mainImageIndex, setMainImageIndex] = useState(0)
+  const swiperParams = {
+    onBeforeInit: (swiper) => {
+      swiper.activeIndex = mainImageIndex
+    },
+    loop: true,
+    onSwiper: setSwiper,
+    onSlideChange: (e) => setMainImageIndex(e.activeIndex),
+  }
+
   useEffect(() => {
     api.get(`/recruit-content/${id}`).then((res) => {
       setContentData(res.data)
@@ -180,14 +193,14 @@ const Content = () => {
         <ContentAreaBox>
           <ContentSubject>픽업 장소 사진</ContentSubject>
           <PickupImages>
-            <ul>
+            <Swiper {...swiperParams} ref={setSwiper}>
               {contentData.pickupLocation &&
                 contentData.pickupLocation.images.map((item, idx) => (
-                  <li key={idx}>
-                    <img src={item} alt="픽업장소사진" />
-                  </li>
+                  <SwiperSlide key={idx}>
+                    <img src={item} alt="픽업장소사진" className="slide-img" />
+                  </SwiperSlide>
                 ))}
-            </ul>
+            </Swiper>
           </PickupImages>
         </ContentAreaBox>
       </ContentArea>
