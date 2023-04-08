@@ -13,6 +13,7 @@ export const InputContainer = styled.div`
   justify-content: flex-start;
   padding: 5px;
   position: relative;
+  margin: ${(props) => props.margin || '0px'};
 `
 export const AlertText = styled.p`
   width: ${(props) => props.width || 'max-content'};
@@ -20,8 +21,5 @@ export const AlertText = styled.p`
   font-size: var(--fz-sm);
   font-weight: var(--fw-bold);
   line-height: 1.3;
-  /* position: absolute; */
-  /* top: calc(100% + 10px); */
-  /* left: 50%;
-  transform: translateX(-50%); */
+  min-height: 18px;
 `

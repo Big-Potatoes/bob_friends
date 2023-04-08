@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   OuterWrapper,
   InputBase,
@@ -8,90 +9,205 @@ import {
 } from '../styles/s-global/common'
 import { Wrapper, InputContainer, AlertText } from '../styles/s-pages/join'
 const Join = () => {
-  //* id 유효성 검사
-  // 1. id 입력 받고 중복검사 누르면 서버로 검사 요청
-  // 2. 검사 결과 받은걸로 유효성 여부 바꾸기
-  //* pw 유효성 검사
-  // 1. pw 입력값이 변할 때 마다 비밀번호 형식에 유효한지
-  // 2. pwConfirm 값이 입력될 때'마다' pw와 같은 값인지 검사해야함
-  //* 회원 정보 submit 전 검사
-  // id, pw, pw-confirm 데이터 모두 입력된 상태
-  // id 유효성 검사 true
-  // pw 양식이 형식에 적합한지
-  // pw, pw-confirm 값이 같은지
-  const [id, setId] = useState('')
-  const [nickname, setNickname] = useState('')
-  const [pw, setPw] = useState('')
-  const [pwConfirm, setPwConfirm] = useState('')
-  const [isValidId, setIsValidId] = useState(false)
-  const [isValidPw, setIsValidPw] = useState(false)
-  const handleInputId = (e) => {
-    // id 값 입력 받는 함수
-    setId(e.target.value)
+  const navigate = useNavigate()
+  const [userInfo, setUserInfo] = useState({
+    id: '',
+    nickname: '',
+    pw: '',
+    pwConfirm: '',
+  })
+  const [errorMessage, setErrorMessage] = useState({
+    id: '',
+    pw: '',
+    pwConfirm: '',
+  })
+  const [validation, setValidation] = useState({
+    id: false,
+    nickname: false,
+    pw: false,
+    pwConfirm: false,
+  })
+  const [modalOpen, setModalOpen] = useState(false)
+  //* 모든 데이터 검사가 완료되면 length === 4
+  const isAllcheck =
+    Object.values(validation).filter((el) => el === true).length === 4
+  const validateId = (id) => {
+    if (!id) {
+      setErrorMessage({
+        ...errorMessage,
+        id: '',
+      })
+      setValidation({
+        ...validation,
+        id: false,
+      })
+    } else if (id.length < 6) {
+      setErrorMessage({
+        ...errorMessage,
+        id: '아이디는 6글자 이상 입력해 주세요.',
+      })
+      setValidation({
+        ...validation,
+        id: false,
+      })
+    } else {
+      //* test data! 추후 api 결과로 바꾸기
+      const testStatus = true
+      //* api 요청 보내고 결과가 중복된 결과라고 나오면
+      if (testStatus === false) {
+        setErrorMessage({
+          ...errorMessage,
+          id: '이미 가입된 아이디입니다.',
+        })
+        setValidation({
+          ...validation,
+          id: false,
+        })
+        //* api 요청 결과가 OK면
+      } else {
+        setErrorMessage({
+          ...errorMessage,
+          id: '사용할 수 있는 아이디입니다.',
+        })
+        setValidation({
+          ...validation,
+          id: true,
+        })
+      }
+    }
   }
-  const handleInputNickname = (e) => {
-    setNickname(e.target.value)
+  const validatePw = (pw) => {
+    const reg =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
+
+    if (!pw) {
+      setErrorMessage({
+        ...errorMessage,
+        pw: '',
+      })
+      setValidation({
+        ...validation,
+        pw: false,
+      })
+    } else if (!reg.test(pw)) {
+      setErrorMessage({
+        ...errorMessage,
+        pw: '사용할 수 없는 비밀번호입니다.',
+      })
+      setValidation({
+        ...validation,
+        pw: false,
+      })
+    } else if (reg.test(pw)) {
+      setErrorMessage({
+        ...errorMessage,
+        pw: '',
+      })
+      setValidation({
+        ...validation,
+        pw: true,
+      })
+    }
   }
-  const handleInputPw = (e) => {
-    //pw 값 입력 받는 함수
-    setPw(e.target.value)
+  const validatePwConfirm = (pwConfirm) => {
+    if (!pwConfirm) {
+      setErrorMessage({
+        ...errorMessage,
+        pwConfirm: '',
+      })
+      setValidation({
+        ...validation,
+        pwConfirm: false,
+      })
+    } else if (userInfo.pw !== pwConfirm) {
+      setErrorMessage({
+        ...errorMessage,
+        pwConfirm: '비밀번호가 일치하지 않습니다.',
+      })
+      setValidation({
+        ...validation,
+        pwConfirm: false,
+      })
+    } else {
+      setErrorMessage({
+        ...errorMessage,
+        pwConfirm: '',
+      })
+      setValidation({
+        ...validation,
+        pwConfirm: true,
+      })
+    }
   }
-  const handleInputPwConfirm = (e) => {
-    //pwConfirm 값 입력 받는 함수
-    setPwConfirm(e.target.value)
-  }
-  const checkId = () => {
-    //TODO: id 유효성 검사 IN 서버 -> id 입력 후 중복검사 요청 보낸 결과값으로 보여주기
-    setIsValidId(true)
-  }
-  const checkpw = () => {
-    //1. 총 길이가 8글자 이상 20글자 이하
-    //2. 영어 소문자, 대문자, 숫자, 특수기호 모두를 포함해야 함
-    const reg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&]).{2,}$/
-    setIsValidPw(pw.length !== 0 && reg.test(pw))
-  }
-  const checkPwConfirm = () => {
-    // 모두 입력된 상태이고
-    // 값이 같아야함
-    console.log(pw)
-    console.log(pw === pwConfirm)
-    return pw.length !== 0 && pwConfirm.length !== 0 && pw === pwConfirm
+  const handleInputValue = (key) => (e) => {
+    setUserInfo({
+      ...userInfo,
+      [key]: e.target.value,
+    })
+    //* id 검사
+    if (key === 'id') {
+      const id = e.target.value
+      validateId(id)
+      //* submit 전 확인할 nickname 데이터 검사 결과
+    } else if (key === 'nickname') {
+      const nickname = e.target.value
+      if (nickname) {
+        setValidation({
+          ...validation,
+          nickname: true,
+        })
+      } else {
+        setValidation({
+          ...validation,
+          nickname: false,
+        })
+      }
+      //* pw 검사
+    } else if (key === 'pw') {
+      const pw = e.target.value
+      validatePw(pw)
+      //* pwConfirm 검사
+    } else if (key === 'pwConfirm') {
+      const pwConfirm = e.target.value
+      validatePwConfirm(pwConfirm)
+    }
   }
   const submitUserInfo = (e) => {
+    //* id, nickname, pw, pwConfirm 값이 전부 입력되고
+    // 유효성 검사를 다 마쳤는지 확인해서
+    // api 요청 보내기
     e.preventDefault()
-    console.log(id, nickname, pw)
+    const data = {
+      id: userInfo.id,
+      nickname: userInfo.nickname,
+      pw: userInfo.pw,
+    }
+    console.log('api post 요청', data)
+    setTimeout(() => {
+      navigate('/login')
+    }, 2000)
   }
-  //Todo: 1. 모든 값이 다 입력되고, 2.유효성 검사를 모두 통과해야 회원가입 버튼을 누를 수 있도록 하기(disabled)
   return (
     <OuterWrapper>
-      <Wrapper className="join_wrapper" action="#">
+      <Wrapper className="join_wrapper" action="#" onSubmit={submitUserInfo}>
         <InputContainer className="input_id">
           <InputLabel htmlFor="id">아이디</InputLabel>
           <InputBase
             type="text"
             id="id"
-            onChange={handleInputId}
-            value={id}
+            onChange={handleInputValue('id')}
+            value={userInfo.id}
             required
           />
         </InputContainer>
-        <p onClick={checkId}>중복검사</p>
-        <div className="id_alert_wrapper">
-          {id ? (
-            isValidId ? (
-              <AlertText>사용할 수 있는 아이디입니다.</AlertText>
-            ) : (
-              <AlertText>이미 가입된 아이디입니다.</AlertText>
-            )
-          ) : null}
-        </div>
+        <AlertText>{errorMessage.id}</AlertText>
         <InputContainer className="input_nickname">
           <InputLabel htmlFor="id">닉네임</InputLabel>
           <InputBase
             type="text"
             id="nickname"
-            onChange={handleInputNickname}
-            value={nickname}
+            onChange={handleInputValue('nickname')}
+            value={userInfo.nickname}
             required
           />
         </InputContainer>
@@ -100,11 +216,8 @@ const Join = () => {
           <InputBase
             type="password"
             id="password"
-            onChange={(e) => {
-              handleInputPw(e)
-              checkpw()
-            }}
-            value={pw}
+            onChange={handleInputValue('pw')}
+            value={userInfo.pw}
             required
           />
         </InputContainer>
@@ -112,36 +225,22 @@ const Join = () => {
           8~20자 사이의 영문 소문자, 대문자, 숫자, 특수기호(@$!%*?&)로
           이루어져야 합니다.
         </AlertText>
-        {pw ? (
-          isValidPw ? null : (
-            <AlertText>사용할 수 없는 비밀번호입니다.</AlertText>
-          )
-        ) : null}
+        <AlertText>{errorMessage.pw}</AlertText>
         <InputContainer className="input_password_confirm">
           <InputLabel htmlFor="password_confirm">비밀번호 확인</InputLabel>
           <InputBase
             type="password"
             id="password_confirm"
-            onChange={(e) => {
-              handleInputPwConfirm(e)
-              checkPwConfirm()
-            }}
-            value={pwConfirm}
+            onChange={handleInputValue('pwConfirm')}
+            value={userInfo.pwConfirm}
             required
           />
         </InputContainer>
-        {pwConfirm ? (
-          checkPwConfirm() ? null : (
-            <AlertText>비밀번호가 일치하지 않습니다.</AlertText>
-          )
-        ) : null}
+        <AlertText>{errorMessage.pwConfirm}</AlertText>
         <ButtonBase
           type="submit"
-          className={
-            isValidId && isValidPw && checkPwConfirm() ? 'disabled' : null
-          }
-          onSubmit={submitUserInfo}
-          disabled={false}
+          className={isAllcheck ? null : 'disabled'}
+          disabled={!isAllcheck}
         >
           회원가입
         </ButtonBase>
