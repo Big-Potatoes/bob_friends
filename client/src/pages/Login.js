@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -17,7 +18,11 @@ import {
 
 const Login = () => {
   const navigate = useNavigate()
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState({
+    id: '',
+    pw: '',
+    status: '',
+  })
   const [userInfo, setUserInfo] = useState({
     id: '',
     pw: '',
@@ -29,19 +34,18 @@ const Login = () => {
       [key]: e.target.value,
     }
     setUserInfo(data)
+    if (e.target.value) {
+      setErrorMessage({
+        ...errorMessage,
+        status: '',
+      })
+    }
   }
   // todo: api 붙이면 수정할 곳!
   const testApi = false
   const submitUserInfo = (e) => {
     e.preventDefault()
-    console.log('api 요청', userInfo)
-    //* 로그인 버튼 누르면 서버에 post 요청
-    if (testApi) {
-      setErrorMessage('')
-      navigate('/')
-    } else {
-      setErrorMessage('아이디가 유효하지 않거나 잘못된 비밀번호 입니다.')
-    }
+    //* login 요청 거절 당했을 때
   }
   return (
     <OuterWrapper>
@@ -55,6 +59,7 @@ const Login = () => {
             value={userInfo.id}
           />
         </InputContainer>
+        <AlertText className="alert_id">{errorMessage.id}</AlertText>
         <InputContainer className="input_password">
           <InputLabel htmlFor="password">비밀번호</InputLabel>
           <InputBase
@@ -63,7 +68,8 @@ const Login = () => {
             onChange={handleUserInfo('pw')}
             value={userInfo.pw}
           />
-          <AlertText>{errorMessage}</AlertText>
+          <AlertText className="alert_pw">{errorMessage.pw}</AlertText>
+          <AlertText className="alert_status">{errorMessage.status}</AlertText>
         </InputContainer>
         <ButtonBase type="submit" margin={'60px 0 30px 0'}>
           로그인

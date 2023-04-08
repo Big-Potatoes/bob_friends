@@ -13,6 +13,7 @@ export const InputContainer = styled.div`
   justify-content: flex-start;
   padding: 5px;
   position: relative;
+  margin-bottom: 18px;
 `
 export const AlertText = styled.p`
   width: max-content;
