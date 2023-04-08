@@ -2,85 +2,80 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../api/api'
 import { OuterWrapper, Tag, ButtonSm } from '../styles/s-global/common'
+import { FaQuestionCircle } from 'react-icons/fa'
 import {
   TagWrap,
   ContentHead,
   ContentTitle,
   ContentUser,
   ContentConsole,
-  ContentField,
   ContentFieldBox,
+  ContentSubject,
   ContentBtnWrap,
   ContentText,
+  ContentArea,
+  ContentAreaBox,
+  Tooltip,
+  TooltipMsg,
+  FriendsMenu,
+  MenuStatus,
+  PickupImages,
 } from '../styles/s-pages/content'
-import {
-  PeopleCountWrapper,
-  ChartWrapper,
-  CountNum,
-} from '../styles/s-components/listcontent'
-import PeopleCountPie from '../components/PeopleCountPie'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/ko'
+import { useParams } from 'react-router-dom'
+import PeopleCountPie from '../components/PeopleCountPie'
+import MapContainer from '../components/MapContainer'
 dayjs.extend(relativeTime)
 dayjs.locale('ko')
 
 const Content = () => {
-  const data = [
-    {
-      id: 'peopleCount',
-      value: 3,
-      color: `var(--maincolor)`,
-    },
-    {
-      id: 'leftPeopleCount',
-      value: 1,
-      color: `var(--black-100)`,
-    },
-  ]
-  const [id] = useState(1)
+  const { id } = useParams()
   const [contentData, setContentData] = useState([])
-  const [tags, setTags] = useState([])
-  const [deliveryPrice, setDeliveryPrice] = useState(0)
-  const [endTime, setEndTime] = useState('')
-  const [totalPeople, setTotalPeople] = useState(0)
   const [recruitEnd, setRecruitEnd] = useState(false)
   const currentTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
-
   useEffect(() => {
     api.get(`/recruit-content/${id}`).then((res) => {
       setContentData(res.data)
-      setTags(res.data.tags)
-      setEndTime(res.data.endDateTime)
-      setDeliveryPrice(res.data.deliveryPrice.totalPrice)
-      setTotalPeople(res.data.deliveryPrice.peopleCount)
-      if (currentTime >= endTime) setRecruitEnd(true)
+      if (currentTime >= res.data.endDateTime) setRecruitEnd(true)
     })
   }, [])
   const unitCalc = (amount) => {
+    amount = Math.floor(amount)
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
   const cutSeconds = (time) => {
     return time.slice(0, -3)
   }
+  const chartData = [
+    {
+      id: 'peopleCount',
+      value: contentData.peopleCount,
+      color: `var(--maincolor)`,
+    },
+    {
+      id: 'leftPeopleCount',
+      value: contentData.totalPeopleCount - contentData.peopleCount,
+      color: `var(--black-100)`,
+    },
+  ]
 
   console.log(contentData)
 
   return (
     <OuterWrapper>
       <TagWrap>
-        {tags.map((item, idx) => (
-          <Tag key={idx}>{item}</Tag>
-        ))}
+        {contentData.tags &&
+          contentData.tags.map((item, idx) => <Tag key={idx}>{item}</Tag>)}
       </TagWrap>
       <ContentHead>
         <ContentTitle>{contentData.title}</ContentTitle>
-        <PeopleCountWrapper className="people_count">
-          <ChartWrapper className="chart_wrapper">
-            <PeopleCountPie clasName="chart" data={data} />
-            <CountNum className="chart_summary">{`3/4`}</CountNum>
-          </ChartWrapper>
-        </PeopleCountWrapper>
+        <PeopleCountPie
+          data={chartData}
+          peopleCount={contentData.peopleCount}
+          totalPeopleCount={contentData.totalPeopleCount}
+        />
       </ContentHead>
       <ContentUser>
         <h3>{contentData.writer}</h3>
@@ -93,32 +88,109 @@ const Content = () => {
         </div>
       </ContentUser>
       <ContentConsole>
-        <ContentField>
+        <div>
           <ContentFieldBox>
-            <span>모집 종료 시간</span>
+            <ContentSubject>모집 종료 시간</ContentSubject>
             <p>
-              <span>{cutSeconds(endTime)}</span>
+              <span>
+                {contentData.endDateTime && cutSeconds(contentData.endDateTime)}
+              </span>
               <span className="notice">
-                {recruitEnd ? '모집완료' : dayjs(endTime).toNow()}
+                {recruitEnd
+                  ? '모집완료'
+                  : dayjs(contentData.endDateTime).toNow()}
               </span>
             </p>
           </ContentFieldBox>
           <ContentFieldBox>
-            <span>배달비 개인 부담금</span>
-            <p>{`${unitCalc(deliveryPrice)}원/${totalPeople}명 = ${unitCalc(
-              deliveryPrice / totalPeople
-            )}원`}</p>
+            <ContentSubject>배달비 개인 부담금</ContentSubject>
+            <p>
+              {contentData.deliveryPrice &&
+                `${unitCalc(contentData.deliveryPrice.totalPrice)}원/${
+                  contentData.totalPeopleCount
+                }명 = ${unitCalc(
+                  contentData.deliveryPrice.totalPrice /
+                    contentData.totalPeopleCount
+                )}원`}
+            </p>
           </ContentFieldBox>
-        </ContentField>
+        </div>
         <ContentBtnWrap>
-          <ButtonSm>참여하기</ButtonSm>
+          <ButtonSm paddingRight="10px">
+            참여하기
+            <img src="/assets/spoon.png" alt="참여하기" />
+          </ButtonSm>
           <ButtonSm>
             내 친구 <br />
             초대하기
+            <img src="/assets/spoons.png" alt="친구초대하기" />
           </ButtonSm>
         </ContentBtnWrap>
       </ContentConsole>
       <ContentText>{contentData.content}</ContentText>
+      <ContentArea>
+        <ContentAreaBox>
+          <ContentSubject>지점 정보</ContentSubject>
+          <MapContainer
+            mapid={`map_store_${contentData.id}`}
+            mapLocation={
+              contentData.storeLocation && contentData.storeLocation.address
+            }
+            lat={
+              contentData.storeLocation && contentData.storeLocation.latitude
+            }
+            lng={
+              contentData.storeLocation && contentData.storeLocation.longitude
+            }
+          />
+        </ContentAreaBox>
+        <ContentAreaBox>
+          <ContentSubject>
+            밥 친구가 주문한 메뉴
+            <Tooltip>
+              <FaQuestionCircle />
+              <TooltipMsg>
+                메뉴가 고민되나요?
+                <br />
+                밥친구들의 주문을 확인해 보세요!
+              </TooltipMsg>
+            </Tooltip>
+          </ContentSubject>
+          <FriendsMenu>
+            {contentData.menus &&
+              contentData.menus.map((item, idx) => <li key={idx}>{item}</li>)}
+          </FriendsMenu>
+          <MenuStatus>주문 현황</MenuStatus>
+        </ContentAreaBox>
+        <ContentAreaBox>
+          <ContentSubject>픽업 장소</ContentSubject>
+          <MapContainer
+            mapid={`map_pickup_${contentData.id}`}
+            mapLocation={
+              contentData.pickupLocation && contentData.pickupLocation.address
+            }
+            lat={
+              contentData.pickupLocation && contentData.pickupLocation.latitude
+            }
+            lng={
+              contentData.pickupLocation && contentData.pickupLocation.longitude
+            }
+          />
+        </ContentAreaBox>
+        <ContentAreaBox>
+          <ContentSubject>픽업 장소 사진</ContentSubject>
+          <PickupImages>
+            <ul>
+              {contentData.pickupLocation &&
+                contentData.pickupLocation.images.map((item, idx) => (
+                  <li key={idx}>
+                    <img src={item} alt="픽업장소사진" />
+                  </li>
+                ))}
+            </ul>
+          </PickupImages>
+        </ContentAreaBox>
+      </ContentArea>
     </OuterWrapper>
   )
 }

@@ -31,7 +31,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="join" element={<Join />} />
               <Route path="login" element={<Login />} />
-              <Route path="content" element={<Content />} />
+              <Route path="content/:id" element={<Content />} />
             </Routes>
             <Nav />
           </>
