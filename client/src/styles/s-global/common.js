@@ -46,7 +46,7 @@ export const ButtonBase = styled.button`
 export const ButtonSm = styled.button`
   width: ${(props) => props.width || '80px'};
   min-width: 80px;
-  height: ${(props) => props.height || '40px'};
+  height: '40px';
   font-weight: var(--fw-bold);
   font-size: var(--fz-sm);
   color: white;
@@ -130,7 +130,4 @@ export const ModalContent = styled.div`
   background: ${(props) => props.bg || 'white'};
   border-radius: 3px;
   z-index: 10;
-  > p {
-    line-height: 1.3;
-  }
 `
