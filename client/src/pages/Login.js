@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   OuterWrapper,
   InputLabel,
@@ -15,28 +16,56 @@ import {
 } from '../styles/s-pages/login'
 
 const Login = () => {
-  const [isValid, setIsValid] = useState(true)
-  const checkValid = () => {
-    // 로그인 버튼 누르면 서버에 post 요청 -> 회원 정보 상태에 따라 isValid 변경
-    setIsValid(false)
+  const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState('')
+  const [userInfo, setUserInfo] = useState({
+    id: '',
+    pw: '',
+  })
+
+  const handleUserInfo = (key) => (e) => {
+    const data = {
+      ...userInfo,
+      [key]: e.target.value,
+    }
+    setUserInfo(data)
+  }
+  // todo: api 붙이면 수정할 곳!
+  const testApi = false
+  const submitUserInfo = (e) => {
+    e.preventDefault()
+    console.log('api 요청', userInfo)
+    //* 로그인 버튼 누르면 서버에 post 요청
+    if (testApi) {
+      setErrorMessage('')
+      navigate('/')
+    } else {
+      setErrorMessage('아이디가 유효하지 않거나 잘못된 비밀번호 입니다.')
+    }
   }
   return (
     <OuterWrapper>
-      <Wrapper className="login_wrapper">
+      <Wrapper className="login_wrapper" action="#" onSubmit={submitUserInfo}>
         <InputContainer className="input_id">
           <InputLabel htmlFor="id">아이디</InputLabel>
-          <InputBase type="text" id="id"></InputBase>
+          <InputBase
+            type="text"
+            id="id"
+            onChange={handleUserInfo('id')}
+            value={userInfo.id}
+          />
         </InputContainer>
         <InputContainer className="input_password">
           <InputLabel htmlFor="password">비밀번호</InputLabel>
-          <InputBase type="password" id="password"></InputBase>
-          {!isValid ? (
-            <AlertText>
-              아이디가 유효하지 않거나 잘못된 비밀번호 입니다.
-            </AlertText>
-          ) : null}
+          <InputBase
+            type="password"
+            id="password"
+            onChange={handleUserInfo('pw')}
+            value={userInfo.pw}
+          />
+          <AlertText>{errorMessage}</AlertText>
         </InputContainer>
-        <ButtonBase margin={'60px 0'} onClick={checkValid}>
+        <ButtonBase type="submit" margin={'60px 0 30px 0'}>
           로그인
         </ButtonBase>
         <BottomWrapper className="join">
