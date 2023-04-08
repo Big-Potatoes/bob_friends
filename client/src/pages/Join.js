@@ -38,6 +38,7 @@ const Join = () => {
     pwConfirm: false,
   })
   const [modalOpen, setModalOpen] = useState(false)
+  const [apiRes, setApiRes] = useState(false)
   //* 모든 데이터 검사가 완료되면 length === 4 -> 회원가입 버튼 disabled 상태 관리
   const isAllcheck =
     Object.values(validation).filter((el) => el === true).length === 4
@@ -186,8 +187,6 @@ const Join = () => {
       validatePwConfirm(pwConfirm)
     }
   }
-  // Todo: api 붙이면 수정해야 함
-  const testApi = false
 
   const submitUserInfo = (e) => {
     //* account, nickname, password, pwConfirm 값이 전부 입력되고
@@ -208,39 +207,35 @@ const Join = () => {
             ...errorMessage,
             status: `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`,
           })
+          setApiRes(true)
           setTimeout(() => {
-            console.log('로그인으로 이동')
             navigate('/login')
-          }, 2500)
-        } else if (res.status === 400) {
-          setErrorMessage({
-            ...errorMessage,
-            status: `이미 가입된 아이디입니다.\n올바른 비밀번호를 입력해 주세요.`,
-          })
-          setTimeout(() => {
-            setModalOpen(false)
           }, 2500)
         }
         setModalOpen(true)
       })
       .catch((error) => {
-        console.log(error)
-        setErrorMessage({
-          ...errorMessage,
-          status: `네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해 주세요.`,
-        })
+        if (error.response.request.status === 400) {
+          setErrorMessage({
+            ...errorMessage,
+            status: `이미 가입된 아이디입니다.\n올바른 비밀번호를 입력해 주세요.`,
+          })
+        } else {
+          setErrorMessage({
+            ...errorMessage,
+            status: `네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해 주세요.`,
+          })
+        }
+        setModalOpen(true)
         setTimeout(() => {
-          if (
-            errorMessage.status ===
-            `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`
-          ) {
-            navigate('/login')
-          }
           setModalOpen(false)
         }, 2500)
       })
   }
   const onClickCloseModal = () => {
+    if (apiRes) {
+      navigate('/login')
+    }
     setModalOpen(!modalOpen)
   }
   return (
