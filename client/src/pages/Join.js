@@ -1,5 +1,7 @@
+/* eslint-disable */
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { api } from '../api/api'
 import {
   OuterWrapper,
   InputBase,
@@ -18,102 +20,106 @@ import {
 const Join = () => {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState({
-    id: '',
+    account: '',
     nickname: '',
-    pw: '',
+    password: '',
     pwConfirm: '',
   })
   const [errorMessage, setErrorMessage] = useState({
-    id: '',
-    pw: '',
+    account: '',
+    password: '',
     pwConfirm: '',
     status: `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`,
   })
   const [validation, setValidation] = useState({
-    id: false,
+    account: false,
     nickname: false,
-    pw: false,
+    password: false,
     pwConfirm: false,
   })
   const [modalOpen, setModalOpen] = useState(false)
-  //* 모든 데이터 검사가 완료되면 length === 4
+  //* 모든 데이터 검사가 완료되면 length === 4 -> 회원가입 버튼 disabled 상태 관리
   const isAllcheck =
     Object.values(validation).filter((el) => el === true).length === 4
-  const validateId = (id) => {
-    if (!id) {
+  const validateId = (account) => {
+    if (!account) {
       setErrorMessage({
         ...errorMessage,
-        id: '',
+        account: '',
       })
       setValidation({
         ...validation,
-        id: false,
+        account: false,
       })
-    } else if (id.length < 6) {
+    } else if (account.length < 6) {
       setErrorMessage({
         ...errorMessage,
-        id: '아이디는 6글자 이상 입력해 주세요.',
+        account: '아이디는 6글자 이상 입력해 주세요.',
       })
       setValidation({
         ...validation,
-        id: false,
+        account: false,
       })
     } else {
-      //* test data! 추후 api 결과로 바꾸기
-      const testStatus = true
-      //* api 요청 보내고 결과가 중복된 결과라고 나오면
-      if (testStatus === false) {
-        setErrorMessage({
-          ...errorMessage,
-          id: '이미 가입된 아이디입니다.',
+      //* 내부 검사 다 통과해야(입력값이 있고, 6글자보다 길어야) 서버 통신
+      api
+        .get('/auth/account/check-duplicate', {
+          params: { account },
         })
-        setValidation({
-          ...validation,
-          id: false,
+        .then((res) => {
+          if (res.data) {
+            setErrorMessage({
+              ...errorMessage,
+              account: '사용할 수 있는 아이디입니다.',
+            })
+            setValidation({
+              ...validation,
+              account: true,
+            })
+          }
         })
-        //* api 요청 결과가 OK면
-      } else {
-        setErrorMessage({
-          ...errorMessage,
-          id: '사용할 수 있는 아이디입니다.',
+        .catch((error) => {
+          setErrorMessage({
+            ...errorMessage,
+            account: '이미 가입된 아이디입니다.',
+          })
+          setValidation({
+            ...validation,
+            account: false,
+          })
         })
-        setValidation({
-          ...validation,
-          id: true,
-        })
-      }
     }
   }
   const validatePw = (pw) => {
     const reg =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/
 
-    if (!pw) {
+    if (pw && reg.test(pw)) {
       setErrorMessage({
         ...errorMessage,
-        pw: '',
+        password: '',
       })
       setValidation({
         ...validation,
-        pw: false,
+        password: true,
       })
     } else if (!reg.test(pw)) {
       setErrorMessage({
         ...errorMessage,
-        pw: '사용할 수 없는 비밀번호입니다.',
+        password: '사용할 수 없는 비밀번호입니다.',
       })
       setValidation({
         ...validation,
-        pw: false,
+        password: false,
       })
-    } else if (reg.test(pw)) {
+    } else {
       setErrorMessage({
         ...errorMessage,
-        pw: '',
+        password: '',
       })
       setValidation({
         ...validation,
-        pw: true,
+        password: false,
       })
     }
   }
@@ -127,7 +133,7 @@ const Join = () => {
         ...validation,
         pwConfirm: false,
       })
-    } else if (userInfo.pw !== pwConfirm) {
+    } else if (userInfo.password !== pwConfirm) {
       setErrorMessage({
         ...errorMessage,
         pwConfirm: '비밀번호가 일치하지 않습니다.',
@@ -153,9 +159,9 @@ const Join = () => {
       [key]: e.target.value,
     })
     //* id 검사
-    if (key === 'id') {
-      const id = e.target.value
-      validateId(id)
+    if (key === 'account') {
+      const account = e.target.value
+      validateId(account)
       //* submit 전 확인할 nickname 데이터 검사 결과
     } else if (key === 'nickname') {
       const nickname = e.target.value
@@ -171,9 +177,9 @@ const Join = () => {
         })
       }
       //* pw 검사
-    } else if (key === 'pw') {
-      const pw = e.target.value
-      validatePw(pw)
+    } else if (key === 'password') {
+      const password = e.target.value
+      validatePw(password)
       //* pwConfirm 검사
     } else if (key === 'pwConfirm') {
       const pwConfirm = e.target.value
@@ -184,53 +190,75 @@ const Join = () => {
   const testApi = false
 
   const submitUserInfo = (e) => {
-    //* id, nickname, pw, pwConfirm 값이 전부 입력되고
+    //* account, nickname, password, pwConfirm 값이 전부 입력되고
     // 유효성 검사를 다 마쳤는지 확인해서
     // api 요청 보내기
     e.preventDefault()
     const data = {
-      id: userInfo.id,
+      account: userInfo.account,
       nickname: userInfo.nickname,
-      pw: userInfo.pw,
+      password: userInfo.password,
     }
-    console.log('api post 요청', data)
-    if (!testApi) {
-      setErrorMessage({
-        ...errorMessage,
-        status: `네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해 주세요.`,
+    api
+      .post('/auth/sign-up', data)
+      .then((res) => {
+        console.log(res)
+        if (res.status === 200) {
+          setErrorMessage({
+            ...errorMessage,
+            status: `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`,
+          })
+          setTimeout(() => {
+            console.log('로그인으로 이동')
+            navigate('/login')
+          }, 2500)
+        } else if (res.status === 400) {
+          setErrorMessage({
+            ...errorMessage,
+            status: `이미 가입된 아이디입니다.\n올바른 비밀번호를 입력해 주세요.`,
+          })
+          setTimeout(() => {
+            setModalOpen(false)
+          }, 2500)
+        }
+        setModalOpen(true)
       })
-    }
-    setModalOpen(true)
-    setTimeout(() => {
-      navigate('/login')
-    }, 2500)
+      .catch((error) => {
+        console.log(error)
+        setErrorMessage({
+          ...errorMessage,
+          status: `네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해 주세요.`,
+        })
+        setTimeout(() => {
+          if (
+            errorMessage.status ===
+            `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`
+          ) {
+            navigate('/login')
+          }
+          setModalOpen(false)
+        }, 2500)
+      })
   }
   const onClickCloseModal = () => {
-    if (
-      errorMessage.status ===
-      `회원가입이 완료되었습니다!\n잠시 후 로그인 화면으로 이동합니다.`
-    ) {
-      navigate('/login')
-    } else {
-      setModalOpen(false)
-    }
+    setModalOpen(!modalOpen)
   }
   return (
     <OuterWrapper>
       <Wrapper className="join_wrapper" action="#" onSubmit={submitUserInfo}>
-        <InputContainer className="input_id">
-          <InputLabel htmlFor="id">아이디</InputLabel>
+        <InputContainer className="input_account">
+          <InputLabel htmlFor="account">아이디</InputLabel>
           <InputBase
             type="text"
-            id="id"
-            onChange={handleInputValue('id')}
-            value={userInfo.id}
+            id="account"
+            onChange={handleInputValue('account')}
+            value={userInfo.account}
             required
           />
         </InputContainer>
-        <AlertText>{errorMessage.id}</AlertText>
+        <AlertText>{errorMessage.account}</AlertText>
         <InputContainer className="input_nickname" margin={'0 0 18px 0'}>
-          <InputLabel htmlFor="id">닉네임</InputLabel>
+          <InputLabel htmlFor="nickname">닉네임</InputLabel>
           <InputBase
             type="text"
             id="nickname"
@@ -244,8 +272,8 @@ const Join = () => {
           <InputBase
             type="password"
             id="password"
-            onChange={handleInputValue('pw')}
-            value={userInfo.pw}
+            onChange={handleInputValue('password')}
+            value={userInfo.password}
             required
           />
         </InputContainer>
@@ -253,7 +281,7 @@ const Join = () => {
           8~20자 사이의 영문 소문자, 대문자, 숫자, 특수기호(@$!%*?&)로
           이루어져야 합니다.
         </AlertText>
-        <AlertText>{errorMessage.pw}</AlertText>
+        <AlertText>{errorMessage.password}</AlertText>
         <InputContainer className="input_password_confirm">
           <InputLabel htmlFor="password_confirm">비밀번호 확인</InputLabel>
           <InputBase
