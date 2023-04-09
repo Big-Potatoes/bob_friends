@@ -12,18 +12,19 @@ export const InputContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   padding: 5px;
-  position: relative;
-  margin-bottom: 18px;
+  /* position: relative; */
+  /* margin-bottom: 18px; */
 `
 export const AlertText = styled.p`
   width: max-content;
   color: var(--maincolor);
   font-size: var(--fz-sm);
   font-weight: var(--fw-bold);
-  position: absolute;
-  top: calc(100% + 10px);
+  min-height: 18px;
+  /* position: absolute; */
+  /* top: calc(100% + 10px);
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); */
 `
 export const BottomWrapper = styled.div`
   width: 250px;
