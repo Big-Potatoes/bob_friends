@@ -46,7 +46,7 @@ export const ButtonBase = styled.button`
 export const ButtonSm = styled.button`
   width: ${(props) => props.width || '80px'};
   min-width: 80px;
-  height: 40px;
+  height: '40px';
   font-weight: var(--fw-bold);
   font-size: var(--fz-sm);
   color: white;
@@ -95,15 +95,39 @@ export const Tag = styled.div`
   align-items: center;
 `
 
-// content
-export const ListTitle = styled.h4`
-  font-weight: var(--fw-strong);
-  font-size: var(--fz-big);
+// modal
+export const ModalWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `
-export const ListContent = styled.p`
-  font-size: var(--fz-base);
+export const ModalBack = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--modalBack);
 `
-export const Title = styled.h3`
-  font-weight: var(--fw-strong);
-  font-size: var(--fz-lg);
+export const ModalContent = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: ${(props) => props.width || '70%'};
+  height: ${(props) => props.height || '25%'};
+  padding: 10px;
+  background: ${(props) => props.bg || 'white'};
+  border-radius: 3px;
+  z-index: 10;
 `
