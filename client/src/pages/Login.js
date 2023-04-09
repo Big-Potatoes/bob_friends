@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { api } from '../api/api'
 import {
   OuterWrapper,
   InputLabel,
@@ -19,13 +20,13 @@ import {
 const Login = () => {
   const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState({
-    id: '',
-    pw: '',
+    account: '',
+    password: '',
     status: '',
   })
   const [userInfo, setUserInfo] = useState({
-    id: '',
-    pw: '',
+    account: '',
+    password: '',
   })
 
   const handleUserInfo = (key) => (e) => {
@@ -41,11 +42,22 @@ const Login = () => {
       })
     }
   }
-  // todo: api 붙이면 수정할 곳!
-  const testApi = false
   const submitUserInfo = (e) => {
     e.preventDefault()
     //* login 요청 거절 당했을 때
+    api
+      .post('/auth/sign-in', userInfo)
+      .then((res) => {
+        console.log(res)
+        if (res.status === 200) {
+          localStorage.setItem('Bob_accessToken', res.data.accessToken)
+          localStorage.setItem('Bob_refreshToken', res.data.refreshToken)
+          navigate('/')
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
   return (
     <OuterWrapper>
@@ -55,20 +67,20 @@ const Login = () => {
           <InputBase
             type="text"
             id="id"
-            onChange={handleUserInfo('id')}
-            value={userInfo.id}
+            onChange={handleUserInfo('account')}
+            value={userInfo.account}
           />
         </InputContainer>
-        <AlertText className="alert_id">{errorMessage.id}</AlertText>
+        <AlertText className="alert_id">{errorMessage.account}</AlertText>
         <InputContainer className="input_password">
           <InputLabel htmlFor="password">비밀번호</InputLabel>
           <InputBase
             type="password"
             id="password"
-            onChange={handleUserInfo('pw')}
-            value={userInfo.pw}
+            onChange={handleUserInfo('password')}
+            value={userInfo.password}
           />
-          <AlertText className="alert_pw">{errorMessage.pw}</AlertText>
+          <AlertText className="alert_pw">{errorMessage.password}</AlertText>
           <AlertText className="alert_status">{errorMessage.status}</AlertText>
         </InputContainer>
         <ButtonBase type="submit" margin={'60px 0 30px 0'}>
