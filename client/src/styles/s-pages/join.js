@@ -30,6 +30,7 @@ export const ModalText = styled.pre`
   word-break: break-all;
   overflow: auto;
   line-height: 1.3;
+  font-size: var(--fz-sm);
 `
 export const JoinButton = styled(ButtonBase)`
   margin-top: 50px;

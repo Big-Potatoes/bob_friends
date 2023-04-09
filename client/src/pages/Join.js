@@ -216,7 +216,8 @@ const Join = () => {
         setModalOpen(true)
       })
       .catch((error) => {
-        if (error.response.request.status === 400) {
+        const status = error.response.request.status
+        if (status === 400) {
           setErrorMessage({
             ...errorMessage,
             status: `이미 가입된 아이디입니다.\n올바른 비밀번호를 입력해 주세요.`,
