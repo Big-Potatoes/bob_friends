@@ -10,6 +10,7 @@ import {
   ModalWrap,
   ModalBack,
   ModalContent,
+  ButtonSm,
 } from '../styles/s-global/common'
 import {
   Wrapper,
@@ -18,6 +19,8 @@ import {
   CustomSpan,
   AlertText,
   BottomWrapper,
+  ModalText,
+  CloseModalButton,
 } from '../styles/s-pages/login'
 
 const Login = () => {
@@ -75,7 +78,6 @@ const Login = () => {
       api
         .post('/auth/sign-in', userInfo)
         .then((res) => {
-          console.log(res)
           if (res.status === 200) {
             localStorage.setItem('Bob_accessToken', res.data.accessToken)
             localStorage.setItem('Bob_refreshToken', res.data.refreshToken)
@@ -84,9 +86,9 @@ const Login = () => {
               status: '로그인에 성공했습니다.\n잠시 후 홈 화면으로 이동합니다.',
             })
             setModalOpen(true)
-            // setTimeout(() => {
-            //   navigate('/')
-            // }, 2500)
+            setTimeout(() => {
+              navigate('/')
+            }, 2500)
           }
         })
         .catch((error) => {
@@ -95,7 +97,7 @@ const Login = () => {
             if (status === 401) {
               setErrorMessage({
                 ...errorMessage,
-                status: `로그인에 실패했습니다.\n다음의 경우를 확인해주세요.\n1. 등록된 아이디가 아니거나\n2.아이디, 비밀번호가 잘못 입력되지 않았는지 확인해주세요.`,
+                status: `로그인에 실패했습니다.\n1. 등록된 아이디가 아니거나\n2.아이디, 비밀번호가 잘못 입력되지 않았는지 확인해 주세요.`,
               })
               setModalOpen(true)
               // setTimeout(() => {
@@ -107,9 +109,9 @@ const Login = () => {
                 status: '네트워크가 불안정 하오니\n잠시 후 다시 시도해 주세요.',
               })
               setModalOpen(true)
-              // setTimeout(() => {
-              //   setModalOpen(false)
-              // }, 2500)
+              setTimeout(() => {
+                setModalOpen(false)
+              }, 2500)
             }
           }
         })
@@ -156,7 +158,10 @@ const Login = () => {
       </Wrapper>
       {modalOpen ? (
         <ModalBack>
-          <ModalContent>{errorMessage.status}</ModalContent>
+          <ModalContent>
+            <ModalText>{errorMessage.status}</ModalText>
+            <CloseModalButton>확인</CloseModalButton>
+          </ModalContent>
         </ModalBack>
       ) : null}
     </OuterWrapper>

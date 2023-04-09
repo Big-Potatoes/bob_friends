@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { ButtonSm } from '../s-global/common'
 import { Link } from 'react-router-dom'
 export const Wrapper = styled.form`
   display: flex;
@@ -25,6 +26,17 @@ export const AlertText = styled.p`
   /* top: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%); */
+`
+export const ModalText = styled.pre`
+  text-align: center;
+  white-space: pre-line;
+  word-break: break-all;
+  overflow: auto;
+  line-height: 1.3;
+`
+export const CloseModalButton = styled(ButtonSm)`
+  height: 30px;
+  margin-top: 30px;
 `
 export const BottomWrapper = styled.div`
   width: 250px;
