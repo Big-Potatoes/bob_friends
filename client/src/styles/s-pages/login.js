@@ -33,10 +33,11 @@ export const ModalText = styled.pre`
   word-break: break-all;
   overflow: auto;
   line-height: 1.3;
+  font-size: var(--fz-sm);
 `
 export const CloseModalButton = styled(ButtonSm)`
   height: 30px;
-  margin-top: 30px;
+  margin-top: 10px;
 `
 export const BottomWrapper = styled.div`
   width: 250px;

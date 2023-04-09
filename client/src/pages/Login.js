@@ -26,6 +26,7 @@ import {
 const Login = () => {
   const navigate = useNavigate()
   const [modalOpen, setModalOpen] = useState(false)
+  const [apiRes, setApiRes] = useState(false)
   const [errorMessage, setErrorMessage] = useState({
     account: '',
     password: '',
@@ -56,31 +57,39 @@ const Login = () => {
       }
     }
   }
+  const validateUserInfo = (account, password) => {
+    if (!account && !password) {
+      setErrorMessage({
+        ...errorMessage,
+        account: '아이디를 입력해 주세요.',
+        password: '비밀번호를 입력해 주세요.',
+      })
+      return false
+    } else if (!account) {
+      setErrorMessage({
+        ...errorMessage,
+        account: '아이디를 입력해 주세요.',
+      })
+      return false
+    } else if (!password) {
+      setErrorMessage({
+        ...errorMessage,
+        password: '비밀번호를 입력해 주세요.',
+      })
+      return false
+    }
+    return true
+  }
   const submitUserInfo = (e) => {
     e.preventDefault()
-    if (!userInfo.account && !userInfo.password) {
-      setErrorMessage({
-        ...errorMessage,
-        account: '아이디를 입력해 주세요.',
-        password: '비밀번호를 입력해 주세요.',
-      })
-    } else if (!userInfo.account) {
-      setErrorMessage({
-        ...errorMessage,
-        account: '아이디를 입력해 주세요.',
-      })
-    } else if (!userInfo.password) {
-      setErrorMessage({
-        ...errorMessage,
-        password: '비밀번호를 입력해 주세요.',
-      })
-    } else {
+    if (validateUserInfo(userInfo.account, userInfo.password)) {
       api
         .post('/auth/sign-in', userInfo)
         .then((res) => {
           if (res.status === 200) {
             localStorage.setItem('Bob_accessToken', res.data.accessToken)
             localStorage.setItem('Bob_refreshToken', res.data.refreshToken)
+            setApiRes(true)
             setErrorMessage({
               ...errorMessage,
               status: '로그인에 성공했습니다.\n잠시 후 홈 화면으로 이동합니다.',
@@ -97,12 +106,12 @@ const Login = () => {
             if (status === 401) {
               setErrorMessage({
                 ...errorMessage,
-                status: `로그인에 실패했습니다.\n1. 등록된 아이디가 아니거나\n2.아이디, 비밀번호가 잘못 입력되지 않았는지 확인해 주세요.`,
+                status: `로그인에 실패했습니다.\n등록된 아이디가 아니거나\n아이디, 비밀번호가 잘못 입력되었는지\n 확인해 주세요.`,
               })
               setModalOpen(true)
-              // setTimeout(() => {
-              //   setModalOpen(false)
-              // }, 2500)
+              setTimeout(() => {
+                setModalOpen(false)
+              }, 2500)
             } else {
               setErrorMessage({
                 ...errorMessage,
@@ -117,7 +126,13 @@ const Login = () => {
         })
     }
   }
-  console.log(errorMessage)
+  const onClickCloseModal = () => {
+    if (apiRes) {
+      navigate('/login')
+    }
+    setModalOpen(!modalOpen)
+  }
+
   return (
     <OuterWrapper>
       <Wrapper className="login_wrapper" action="#" onSubmit={submitUserInfo}>
@@ -160,7 +175,9 @@ const Login = () => {
         <ModalBack>
           <ModalContent>
             <ModalText>{errorMessage.status}</ModalText>
-            <CloseModalButton>확인</CloseModalButton>
+            <CloseModalButton onClick={onClickCloseModal}>
+              확인
+            </CloseModalButton>
           </ModalContent>
         </ModalBack>
       ) : null}
