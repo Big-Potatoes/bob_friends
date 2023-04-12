@@ -46,7 +46,7 @@ export const ButtonBase = styled.button`
 export const ButtonSm = styled.button`
   width: ${(props) => props.width || '80px'};
   min-width: 80px;
-  height: '40px';
+  height: 40px;
   font-weight: var(--fw-bold);
   font-size: var(--fz-sm);
   color: white;
