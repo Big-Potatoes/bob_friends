@@ -1,5 +1,10 @@
 # 밥 친구 🍚 🥄🍴
 
+## Docs
+[사용자 요구사항 정의서](https://docs.google.com/spreadsheets/d/1ZJ8_1RlMSru1v3QsV1IMjcrnJCENtYAP5cnY2Ker2EE/edit?usp=sharing)
+<br/>[화면정의서](https://www.figma.com/file/u2xXBR8ePrah7K6qzlnXm0/potatoes?node-id=0%3A1&t=ZCDxn9jtdTXQ2y4N-1)
+<br/>[API정의서](http://ec2-13-209-72-206.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/index.html)
+
 ## Commit Convention
 |제목|내용|
 |------|---|
