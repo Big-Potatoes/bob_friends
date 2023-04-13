@@ -11,6 +11,12 @@ import ListContent from '../components/ListContent'
 import { api } from '../api/api'
 import { Oval } from 'react-loader-spinner'
 const Index = () => {
+  useEffect(() => {
+    api
+      .get('/auth/current')
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error))
+  }, [])
   const PAGE_SIZE = 5
   const pageEnd = useRef()
   const [page, setPage] = useState(1)
