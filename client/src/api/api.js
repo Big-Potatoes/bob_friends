@@ -6,9 +6,7 @@ export const api = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,
   timeout: 10000,
 })
-// const access = localStorage.getItem('Bob_accessToken')
-const access =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QWNjIiwibmFtZSI6InRlc3QiLCJpYXQiOjE2ODEyODYyMzYsImV4cCI6MTY4MTI4ODAzNn0.OtOjRi8-6rdynXojy5lbzCJfX_SPd_MPjuBLjRmvlIE'
+const access = localStorage.getItem('Bob_accessToken')
 const refresh = localStorage.getItem('Bob_refreshToken')
 const refreshToken = () => {
   api
@@ -47,7 +45,7 @@ api.interceptors.response.use(
     console.log(response)
     return response
   },
-  function async(error) {
+  function (error) {
     // if (error.response.status === accessToken 만료일 때) {
     //   refreshToken()
     // }
