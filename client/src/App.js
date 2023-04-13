@@ -9,6 +9,7 @@ import Nav from './components/Nav'
 import Index from './pages/Index'
 import Login from './pages/Login'
 import Content from './pages/Content'
+import Write from './pages/Write'
 
 function App() {
   // 맨 처음 앱을 실행하면 localStorage에 접속한 기록을 남겨둠
@@ -32,6 +33,7 @@ function App() {
               <Route path="join" element={<Join />} />
               <Route path="login" element={<Login />} />
               <Route path="content/:id" element={<Content />} />
+              <Route path="write" element={<Write />} />
             </Routes>
             <Nav />
           </>
