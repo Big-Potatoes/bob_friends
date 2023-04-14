@@ -1,5 +1,5 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
-import { contentSlice } from './content'
+import { contentSlice } from './contentStore'
 // useState 와 비슷한 역할
 // createSlice({
 //     name: 'state이름',
