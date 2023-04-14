@@ -39,13 +39,13 @@ export const WriteInput = styled(InputBase)`
 export const WriteLabel = styled(InputLabel)`
   font-size: var(--fz-sm);
   border: 1px solid black;
-  /* width: ${(props) => props.width || 'auto'}; */
+  width: ${(props) => props.width || '120px'};
 `
 
 export const InputContainer = styled.div`
   padding: 10px 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props) => props.flex || 'column'};
   /* border: 1px solid black; */
   border-bottom: 1px solid var(--black-100);
 `

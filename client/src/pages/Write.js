@@ -34,7 +34,7 @@ const Write = () => {
           </InputWrapper>
           <MapWrapper className="store__map">지점 지도</MapWrapper>
         </InputContainer>
-        <InputContainer className="recruit__container">
+        <InputContainer className="recruit__container" flex={'row'}>
           <ColumnBox className="first_row">
             <InputWrapper className="delivery_price">
               <WriteLabel
@@ -61,7 +61,7 @@ const Write = () => {
                 id="recruit_people"
                 className="recruit_people__select"
               >
-                <option value="">모집 인원을 선택해 주세요.</option>
+                <option value="">모집 인원 선택</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
@@ -104,7 +104,7 @@ const Write = () => {
           <WriteInput type="text" className="pickup_address" />
           <MapWrapper className="pickup_address">픽업 지도</MapWrapper>
         </InputContainer>
-        <InputContainer className="order__wrapper">
+        <InputContainer className="order__container">
           <button className="new_order">+</button>
           <div className="label">
             <WriteLabel className="menu" htmlFor="menu">
