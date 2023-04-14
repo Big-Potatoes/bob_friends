@@ -14,8 +14,8 @@ const Index = () => {
   useEffect(() => {
     api
       .get('/auth/current')
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error))
+      .then((res) => console.log('유저 정보 성공', res))
+      .catch((error) => console.log('실패::::::', error))
   }, [])
   const PAGE_SIZE = 5
   const pageEnd = useRef()
