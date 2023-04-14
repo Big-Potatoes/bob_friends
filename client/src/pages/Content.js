@@ -1,10 +1,8 @@
-/* eslint-disable */
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { api } from '../api/api'
-import { OuterWrapper, Tag, ButtonSm } from '../styles/s-global/common'
 import { FaQuestionCircle } from 'react-icons/fa'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
+import { OuterWrapper, Tag } from '../styles/s-global/common'
 import {
   TagWrap,
   ContentHead,
@@ -14,6 +12,7 @@ import {
   ContentFieldBox,
   ContentSubject,
   ContentBtnWrap,
+  ContentBtn,
   ContentText,
   ContentArea,
   ContentAreaBox,
@@ -22,13 +21,13 @@ import {
   FriendsMenu,
   MenuStatus,
   PickupImages,
+  ImageBox,
 } from '../styles/s-pages/content'
+import PeopleCountPie from '../components/PeopleCountPie'
+import MapContainer from '../components/MapContainer'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/ko'
-import { useParams } from 'react-router-dom'
-import PeopleCountPie from '../components/PeopleCountPie'
-import MapContainer from '../components/MapContainer'
 dayjs.extend(relativeTime)
 dayjs.locale('ko')
 
@@ -37,16 +36,6 @@ const Content = () => {
   const [contentData, setContentData] = useState([])
   const [recruitEnd, setRecruitEnd] = useState(false)
   const currentTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
-  const [swiper, setSwiper] = useState(null)
-  const [mainImageIndex, setMainImageIndex] = useState(0)
-  const swiperParams = {
-    onBeforeInit: (swiper) => {
-      swiper.activeIndex = mainImageIndex
-    },
-    loop: true,
-    onSwiper: setSwiper,
-    onSlideChange: (e) => setMainImageIndex(e.activeIndex),
-  }
 
   useEffect(() => {
     api.get(`/recruit-content/${id}`).then((res) => {
@@ -73,8 +62,6 @@ const Content = () => {
       color: `var(--black-100)`,
     },
   ]
-
-  console.log(contentData)
 
   return (
     <OuterWrapper>
@@ -129,15 +116,15 @@ const Content = () => {
           </ContentFieldBox>
         </div>
         <ContentBtnWrap>
-          <ButtonSm paddingRight="10px">
+          <ContentBtn paddingRight={`10px`}>
             참여하기
             <img src="/assets/spoon.png" alt="참여하기" />
-          </ButtonSm>
-          <ButtonSm>
+          </ContentBtn>
+          <ContentBtn>
             내 친구 <br />
             초대하기
             <img src="/assets/spoons.png" alt="친구초대하기" />
-          </ButtonSm>
+          </ContentBtn>
         </ContentBtnWrap>
       </ContentConsole>
       <ContentText>{contentData.content}</ContentText>
@@ -193,14 +180,12 @@ const Content = () => {
         <ContentAreaBox>
           <ContentSubject>픽업 장소 사진</ContentSubject>
           <PickupImages>
-            <Swiper {...swiperParams} ref={setSwiper}>
-              {contentData.pickupLocation &&
-                contentData.pickupLocation.images.map((item, idx) => (
-                  <SwiperSlide key={idx}>
-                    <img src={item} alt="픽업장소사진" className="slide-img" />
-                  </SwiperSlide>
-                ))}
-            </Swiper>
+            {contentData.pickupLocation &&
+              contentData.pickupLocation.images.map((item, idx) => (
+                <ImageBox key={idx}>
+                  <img src={item} alt="픽업장소사진" className="slide-img" />
+                </ImageBox>
+              ))}
           </PickupImages>
         </ContentAreaBox>
       </ContentArea>

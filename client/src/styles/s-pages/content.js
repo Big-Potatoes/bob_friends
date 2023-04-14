@@ -75,20 +75,20 @@ export const ContentBtnWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  ${ButtonSm} {
-    position: relative;
-    padding-right: ${(props) => props.paddingRight || '15px'};
-    font-size: var(--fz-xs);
-    line-height: 1.2;
-    > img {
-      position: absolute;
-      right: 5px;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 80%;
-      width: auto;
-      object-fit: cover;
-    }
+`
+export const ContentBtn = styled(ButtonSm)`
+  position: relative;
+  padding-right: ${(props) => props.paddingRight || '15px'};
+  font-size: var(--fz-xs);
+  line-height: 1.2;
+  > img {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 35px;
+    width: auto;
+    object-fit: cover;
   }
 `
 export const ContentText = styled.div`
@@ -107,7 +107,7 @@ export const ContentArea = styled.div`
   flex-wrap: wrap;
 `
 export const ContentAreaBox = styled.div`
-  width: calc(50% - 10px);
+  width: calc(50% - 5px);
   margin-right: 10px;
   margin-bottom: 20px;
   &:nth-of-type(2n) {
@@ -160,8 +160,53 @@ export const MenuStatus = styled(ButtonSm)`
   height: 28px;
   margin-top: 15px;
 `
-export const PickupImages = styled.div`
+export const PickupImages = styled.ul`
+  position: relative;
   width: 100%;
   padding-bottom: 100%;
   height: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #fff;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &:before {
+    content: '';
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #fff;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+`
+export const ImageBox = styled.li`
+  width: 50%;
+  height: 0;
+  padding-bottom: calc(50%);
+  position: relative;
+  overflow: hidden;
+  &:nth-of-type(2n) {
+    margin-right: 0;
+  }
+  > img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 120%;
+    width: auto;
+    object-fit: cover;
+  }
 `
