@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable */
+import React, { useState } from 'react'
 import { HiChevronDown } from 'react-icons/hi2'
 import { OuterWrapper } from '../styles/s-global/common'
 import {
@@ -15,15 +16,81 @@ import {
   ButtonWrapper,
   AddButton,
 } from '../styles/s-pages/write'
+import Select from '../components/Select'
 
 const Write = () => {
+  const [content, setContent] = useState({
+    title: '',
+    writer: '',
+    content: '',
+    // "2023-04-16T13:10:14.207Z" 형태로 만들어 줄 것
+    endDateTime: '',
+    totalPeopleCount: 0,
+    deliveryPrice: 0,
+    tags: [],
+    storeLocation: {
+      address: '',
+      latitude: 0,
+      longitude: 0,
+    },
+    pickupLocation: {
+      locationDescription: '',
+      address: '',
+      latitude: 0,
+      longitude: 0,
+      images: [],
+    },
+    order: [
+      {
+        menu: '',
+        quantity: 0,
+        price: 0,
+      },
+    ],
+  })
+  const [storeLocation, setStoreLocation] = useState({
+    address: '',
+    latitude: 0,
+    longitude: 0,
+  })
+  const [pickupLocation, setPickupLocation] = useState({
+    locationDescription: '',
+    address: '',
+    latitude: 0,
+    longitude: 0,
+    images: [],
+  })
+  const [order, setOrder] = useState([
+    {
+      menu: '',
+      quantity: 0,
+      price: 0,
+    },
+  ])
+  const handleContentInput = (key) => (e) => {
+    const handleKey = (key) => {
+      // storeLocation, pickupLocation, deliveryPrice, order
+    }
+    setContent({
+      ...content,
+      [key]: e.target.value,
+    })
+  }
   return (
     <OuterWrapper>
       <Wrapper action="#" className="write__wrapper">
         <TitleInput type="text" className="title" placeholder="제목" />
         <ContentInput className="content" placeholder="내용" />
+        <InputContainer className="tag__container">
+          <FlexBox className="tag__wrapper">
+            <WriteLabel className="tag__label" htmlFor="tag" width={'80px'}>
+              카테고리
+            </WriteLabel>
+            <WriteInput className="tag__input" id="tag" width={'100%'} />
+          </FlexBox>
+        </InputContainer>
         <InputContainer className="recruit__container">
-          <FlexBox className="delivery_price">
+          <FlexBox className="delivery_fee">
             <WriteLabel
               htmlFor="delivery_price"
               className="delivery_price__label"
@@ -32,8 +99,9 @@ const Write = () => {
             </WriteLabel>
             <WriteInput
               type="number"
-              className="delivery_price__input"
-              id="delivery_price"
+              className="delivery_fee__input"
+              id="delivery_fee"
+              onChange={handleContentInput('deliveryPrice')}
             />
           </FlexBox>
           <FlexBox className="recruit_people">
@@ -43,26 +111,7 @@ const Write = () => {
             >
               모집 인원
             </WriteLabel>
-            <SelectBox
-              name="recruit_people"
-              id="recruit_people"
-              className="recruit_people__select"
-            >
-              {/* option tag 안에 아이콘 넣는 법 알아보기 */}
-              <option disabled selected>
-                모집 인원 선택
-                <HiChevronDown />
-              </option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </SelectBox>
+            <Select min={2} max={10} defaultValue={'모집 인원 선택'} />
           </FlexBox>
           <FlexBox className="recruit_endtime">
             <WriteLabel>모집 종료 시간</WriteLabel>
