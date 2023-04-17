@@ -138,8 +138,6 @@ const Write = () => {
       order: updateList,
     })
   }
-  // console.log('태그리스트', singleContent.tags)
-  console.log('데이터 업데이트:::::::', singleContent.order)
   return (
     <OuterWrapper>
       <Wrapper action="#" className="write__wrapper">
