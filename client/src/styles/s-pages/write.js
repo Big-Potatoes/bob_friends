@@ -34,7 +34,7 @@ export const ContentInput = styled.textarea`
 `
 export const CustomInput = styled(InputBase)`
   width: ${(props) => props.width || '150px'};
-  height: auto;
+  height: 26.5px;
   text-align: ${(props) => props.textAlign || 'start'};
 `
 export const WriteLabel = styled(InputLabel)`
@@ -59,6 +59,7 @@ export const FlexBox = styled.div`
   justify-content: ${(props) => props.justify || 'space-between'};
   margin-bottom: ${(props) => props.marginBottom || '0'};
   min-height: ${(props) => props.minHeight || '0'};
+  position: ${(props) => props.position || ''};
 `
 export const MapWrapper = styled.div`
   width: 100%;

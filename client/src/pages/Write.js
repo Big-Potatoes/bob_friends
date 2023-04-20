@@ -20,7 +20,7 @@ import Select from '../components/Select'
 import WriteInput from '../components/WriteInput'
 import TagList from '../components/Tag'
 import Order from '../components/Order'
-
+import Timepicker from '../components/Timepicker'
 const Write = () => {
   //* api 보내는 데이터 기준 구조
   const [singleContent, setSingleContent] = useState({
@@ -217,15 +217,14 @@ const Write = () => {
           </FlexBox>
           <FlexBox className="recruit_endtime__wrapper">
             <WriteLabel width={'max-content'}>모집 종료 시간</WriteLabel>
-            <SelectBox className="date_picker">
-              <option value="">time1</option>
-              <option value="">time2</option>
-              <option value="">time3</option>
-              <option value="">time4</option>
-            </SelectBox>
+            <Timepicker />
           </FlexBox>
           {singleContent.deliveryPrice && singleContent.totalPeopleCount ? (
-            <WriteAlert id="expect_price" className="expect_price__data">
+            <WriteAlert
+              id="expect_price"
+              className="expect_price__data"
+              role="alert"
+            >
               예상 배달비는{' '}
               {parseInt(
                 singleContent.deliveryPrice / singleContent.totalPeopleCount
