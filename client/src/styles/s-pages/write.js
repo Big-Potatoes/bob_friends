@@ -32,30 +32,33 @@ export const ContentInput = styled.textarea`
     font-weight: var(--fw-bold);
   }
 `
-export const WriteInput = styled(InputBase)`
+export const CustomInput = styled(InputBase)`
   width: ${(props) => props.width || '150px'};
   height: auto;
+  text-align: ${(props) => props.textAlign || 'start'};
 `
 export const WriteLabel = styled(InputLabel)`
   display: flex;
   align-items: center;
-  width: ${(props) => props.width || 'max-content'};
+  width: ${(props) => props.width || '80px'};
   height: 30px;
   font-size: var(--fz-sm);
-  margin-right: ${(props) => props.mgr || '10px'};
+  margin-right: ${(props) => props.marginRight || '10px'};
   justify-content: ${(props) => props.justify || 'flex-start'};
 `
 export const InputContainer = styled.div`
   padding: 10px 0;
   display: flex;
   flex-direction: ${(props) => props.flex || 'column'};
-  /* border: 1px solid black; */
   border-bottom: 1px solid var(--black-100);
 `
 export const FlexBox = styled.div`
   display: flex;
   align-items: center;
+  width: ${(props) => props.width || '100%'};
   justify-content: ${(props) => props.justify || 'space-between'};
+  margin-top: ${(props) => props.marginTop || '0'};
+  min-height: ${(props) => props.minHeight || '0'};
 `
 export const MapWrapper = styled.div`
   width: 100%;
@@ -78,7 +81,7 @@ export const WriteAlert = styled(AlertText)`
   text-align: center;
   margin-top: 10px;
 `
-export const AddButton = styled.button`
+export const AddBtn = styled.button`
   width: 25px;
   height: 25px;
   border-radius: 50%;
@@ -87,7 +90,16 @@ export const AddButton = styled.button`
   font-size: var(--fz-lg);
   font-weight: var(--fw-bold);
 `
+export const OrderDeleteBtn = styled.button`
+  width: 40px;
+  height: 25px;
+  color: var(--black-300);
+  font-size: var(--fz-xs);
+`
 export const ButtonWrapper = styled.div`
   display: flex;
-  padding: 5px 15px 0 0;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  width: calc(100% - 50px);
 `
