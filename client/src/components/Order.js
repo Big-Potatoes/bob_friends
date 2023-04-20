@@ -2,10 +2,10 @@ import React from 'react'
 import { FlexBox, CustomInput } from '../styles/s-pages/write'
 const Order = ({ order, idx, handleOrderInput }) => {
   return (
-    <FlexBox className="order_input__wrapper" marginTop={'3px'}>
+    <FlexBox className="order_input__wrapper" marginBottom={'3px'}>
       <CustomInput
         id={`menu${idx}`}
-        width={'30%'}
+        width={'35%'}
         textAlign={'center'}
         value={order.menu}
         onChange={handleOrderInput('menu', idx)}
@@ -21,7 +21,7 @@ const Order = ({ order, idx, handleOrderInput }) => {
       <CustomInput
         type={'number'}
         id={`price${idx}`}
-        width={'30%'}
+        width={'35%'}
         textAlign={'center'}
         value={order.price}
         onChange={handleOrderInput('price', idx)}

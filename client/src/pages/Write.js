@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react'
 // import { HiChevronDown } from 'react-icons/hi2'
 import { OuterWrapper } from '../styles/s-global/common'
@@ -138,6 +139,30 @@ const Write = () => {
       order: updateList,
     })
   }
+  // address handle function
+  const handleAddressInput = (category, key) => (e) => {
+    //* category -> store / pickup
+    // key -> address, latitude, longitude
+    if (category === 'store') {
+      const updatestore = {
+        ...singleContent.storeLocation,
+        [key]: e.target.value,
+      }
+      setSingleContent({
+        ...singleContent,
+        storeLocation: updatestore,
+      })
+    } else if (category === 'pickup') {
+      const updatestore = {
+        ...singleContent.storeLocation,
+        [key]: e.target.value,
+      }
+      setSingleContent({
+        ...singleContent,
+        storeLocation: updatestore,
+      })
+    }
+  }
   return (
     <OuterWrapper>
       <Wrapper action="#" className="write__wrapper">
@@ -211,11 +236,11 @@ const Write = () => {
         </InputContainer>
         <InputContainer className="order__container">
           <div className="order__wrapper">
-            <FlexBox className="order__label" width={'calc(100% - 50px)'}>
+            <FlexBox className="order__label" width={'calc(90%)'}>
               <WriteLabel
                 className="menu"
                 htmlFor="menu"
-                width={'30%'}
+                width={'35%'}
                 justify={'center'}
                 marginRight={'0'}
               >
@@ -224,7 +249,7 @@ const Write = () => {
               <WriteLabel
                 className="quantity"
                 htmlFor="quantity"
-                width={'20%'}
+                width={'25%'}
                 justify={'center'}
                 marginRight={'0'}
               >
@@ -233,7 +258,7 @@ const Write = () => {
               <WriteLabel
                 className="price"
                 htmlFor="price"
-                width={'30%'}
+                width={'35%'}
                 justify={'center'}
                 marginRight={'0'}
               >
@@ -270,6 +295,7 @@ const Write = () => {
             title={'store_address'}
             value={'지점 정보'}
             inputWidth={'100%'}
+            onChange={handleContentInput('title')}
           />
           <MapWrapper className="store__map">지점 지도</MapWrapper>
         </InputContainer>
