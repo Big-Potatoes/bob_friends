@@ -7,13 +7,11 @@ const MapBox = styled.div`
   width: 100%;
   padding-bottom: 100%;
   height: 0;
-  &.halfHeight {
+  margin-top: ${(props) => props.marginTop || '0'};
+  &.halfHeight,
+  &.result {
     padding-bottom: 50%;
   }
-  &.result {
-    padding-bottom: 30%;
-  }
-  margin-top: ${(props) => props.marginTop || '0'};
 `
 const MenuWrapper = styled.div`
   padding: 5px 0;
@@ -26,10 +24,16 @@ const ResultTitle = styled.h4`
   padding: 5px 0;
   text-align: center;
 `
+const AlertText = styled.p`
+  margin-top: 10px;
+  min-height: 15px;
+  text-align: center;
+  color: var(--black-200);
+`
 const MenuList = styled.ul`
   display: flex;
   flex-direction: column;
-  height: 250px;
+  height: 180px;
   overflow-y: auto;
   /* border: 1px solid red; */
   font-size: var(--fz-sm);
@@ -57,15 +61,15 @@ const MapContainer = ({
   const [longitude, setLongitude] = useState(lng)
   useEffect(() => {
     const container = document.getElementById(`${mapid}`)
-    const options = {
-      center: new kakao.maps.LatLng(latitude, longitude),
-      level: 3,
-    }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         setLatitude(position.coords.latitude)
         setLongitude(position.coords.longitude)
       })
+    }
+    const options = {
+      center: new kakao.maps.LatLng(latitude, longitude),
+      level: 3,
     }
     const map = new kakao.maps.Map(container, options)
     // 마커가 표시될 위치입니다
@@ -74,6 +78,10 @@ const MapContainer = ({
     let marker = new kakao.maps.Marker({
       position: markerPosition,
     })
+    const searchOptions = {
+      location: markerPosition,
+      radius: 5000,
+    }
     // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
     const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 })
     // 마커가 지도 위에 표시되도록 설정합니다
@@ -105,12 +113,13 @@ const MapContainer = ({
       })
     } else if (keyword && isModal) {
       // 키워드로 장소를 검색합니다
-      search(keyword, map, infowindow)
+      search(keyword, map, infowindow, searchOptions)
+      map.setLevel(2)
     }
   }, [mapid, address, keyword, latitude, longitude])
 
-  const search = (keyword, map, infowindow) => {
-    searchPlaces(keyword)
+  const search = (keyword, map, infowindow, option) => {
+    searchPlaces(keyword, option)
     let markers = []
 
     // 키워드 검색을 요청하는 함수입니다
@@ -124,7 +133,7 @@ const MapContainer = ({
       }
 
       // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-      ps.keywordSearch(keyword, placesSearchCB)
+      ps.keywordSearch(keyword, placesSearchCB, option)
     }
 
     // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
@@ -318,19 +327,19 @@ const MapContainer = ({
 
   return (
     <div className="wrapper">
-      {!isValid ? <span>검색 결과가 없습니다.</span> : null}
+      {!isValid ? <AlertText>검색 결과가 없습니다.</AlertText> : null}
       <div id="menu_wrap" className="bg_white">
         <MapBox
           id={`${mapid}`}
-          className={`${isHalf ? 'halfHeight' : null} ${
-            isModal && keyword ? 'result' : null
+          className={`${
+            isValid && (isHalf || keyword || address) ? 'halfHeight' : null
           }`}
           marginTop={marginTop}
           style={{
             width: '100%',
           }}
         ></MapBox>
-        {isModal && keyword ? (
+        {isModal && isValid && (keyword || address) ? (
           <MenuWrapper className="list">
             <ResultTitle> - 검색 결과 - </ResultTitle>
             <MenuList id="placesList"></MenuList>
