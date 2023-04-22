@@ -44,8 +44,8 @@ const { kakao } = window
 
 const MapContainer = ({
   mapid,
-  lat,
-  lng,
+  lat = 33.450701,
+  lng = 126.57066,
   address,
   keyword,
   isModal = false,
@@ -53,36 +53,23 @@ const MapContainer = ({
   marginTop,
 }) => {
   const [isValid, setIsValid] = useState(true)
-  const [location, setLocation] = useState({
-    lat: 33.450701,
-    lng: 126.57066,
-  })
-  const onGeoOk = (position) => {
-    lat = position.coords.latitude
-    lng = position.coords.longitude
-    setLocation({
-      lat,
-      lng,
-    })
-    console.log(lat, lng)
-  }
-  const onGeoError = () => {
-    //이거 에러 핸들링 어떻게 하지?
-    console.log('위치 정보를 확인할 수 없습니다.')
-  }
-  useEffect(() => {
-    console.log('여기 타니?')
-    navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError)
-  }, [])
+  const [latitude, setLatitude] = useState(lat)
+  const [longitude, setLongitude] = useState(lng)
   useEffect(() => {
     const container = document.getElementById(`${mapid}`)
     const options = {
-      center: new kakao.maps.LatLng(location.lat, location.lng),
+      center: new kakao.maps.LatLng(latitude, longitude),
       level: 3,
+    }
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setLatitude(position.coords.latitude)
+        setLongitude(position.coords.longitude)
+      })
     }
     const map = new kakao.maps.Map(container, options)
     // 마커가 표시될 위치입니다
-    const markerPosition = new kakao.maps.LatLng(lat, lng)
+    const markerPosition = new kakao.maps.LatLng(latitude, longitude)
     // 마커를 생성합니다
     let marker = new kakao.maps.Marker({
       position: markerPosition,
@@ -92,6 +79,7 @@ const MapContainer = ({
     // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map)
     if (address) {
+      setIsValid(true)
       const geocoder = new kakao.maps.services.Geocoder()
       geocoder.addressSearch(address, function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
@@ -119,7 +107,7 @@ const MapContainer = ({
       // 키워드로 장소를 검색합니다
       search(keyword, map, infowindow)
     }
-  }, [mapid, address, keyword])
+  }, [mapid, address, keyword, latitude, longitude])
 
   const search = (keyword, map, infowindow) => {
     searchPlaces(keyword)
@@ -142,6 +130,7 @@ const MapContainer = ({
     // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
+        setIsValid(true)
         // 정상적으로 검색이 완료됐으면
         // 검색 목록과 마커를 표출합니다
         displayPlaces(data)
@@ -149,7 +138,7 @@ const MapContainer = ({
         // 페이지 번호를 표출합니다
         displayPagination(pagination)
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        alert('검색 결과가 존재하지 않습니다.')
+        setIsValid(false)
         return
       } else if (status === kakao.maps.services.Status.ERROR) {
         alert('검색 결과 중 오류가 발생했습니다.')
@@ -330,7 +319,7 @@ const MapContainer = ({
   return (
     <div className="wrapper">
       {!isValid ? <span>검색 결과가 없습니다.</span> : null}
-      <div id="menu_wrap" class="bg_white">
+      <div id="menu_wrap" className="bg_white">
         <MapBox
           id={`${mapid}`}
           className={`${isHalf ? 'halfHeight' : null} ${
