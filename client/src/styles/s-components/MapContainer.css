@@ -1,0 +1,27 @@
+h5 {
+  font-weight: var(--fw-bold);
+  color: var(--black-300);
+}
+
+div.info {
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+  border-bottom: 1px dotted var(--black-100);
+}
+
+span.jibun {
+  display: none;
+}
+
+span.tel {
+  font-weight: var(--fw-bold);
+}
+
+a.on {
+  color: var(--maincolor);
+  text-decoration: underline;
+  font-weight: var(--fw-bold);
+}
