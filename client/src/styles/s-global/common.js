@@ -122,7 +122,7 @@ export const ModalContent = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   display: flex;
-  justify-content: center;
+  justify-content: ${(props) => props.justify || 'center'};
   align-items: center;
   flex-direction: column;
   width: ${(props) => props.width || '70%'};
