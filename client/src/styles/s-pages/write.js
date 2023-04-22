@@ -104,3 +104,14 @@ export const ButtonWrapper = styled.div`
   margin-top: 7px;
   width: 90%;
 `
+
+export const AddressBtn = styled.button`
+  width: 80px;
+  height: 26.5px;
+  margin-left: 5px;
+  border-radius: 5px;
+  color: white;
+  background: var(--yellow-200);
+  font-weight: var(--fw-bold);
+  font-size: var(--fz-sm);
+`
