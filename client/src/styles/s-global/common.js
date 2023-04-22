@@ -114,6 +114,7 @@ export const ModalBack = styled.div`
   top: 0;
   bottom: 0;
   background: var(--modalBack);
+  z-index: 2;
 `
 export const ModalContent = styled.div`
   position: absolute;
