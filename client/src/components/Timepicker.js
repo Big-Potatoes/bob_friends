@@ -18,7 +18,6 @@ const Timepicker = ({ handleInput }) => {
   const now = dayjs()
   const currentTime = now.toDate()
   const [selectedTime, setSelectedTime] = useState(currentTime)
-
   const getMaxTime = () => {
     // 5시간을 더한 시간이 00시 이하 -> 그대로
     // 5시간을 더해서 00시 이상으로 넘어가면 23:30
@@ -27,7 +26,7 @@ const Timepicker = ({ handleInput }) => {
 
     if (currentHour + 5 > 24) {
       // 당일 23시 59분의 날짜 객체
-      maxTime = currentTime.setHours(23, 59)
+      maxTime = now.toDate().setHours(23, 59)
     } else {
       maxTime = add(currentTime, { hours: 5 })
     }
