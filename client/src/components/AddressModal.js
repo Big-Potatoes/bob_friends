@@ -11,7 +11,6 @@ import MapContainer from './MapContainer'
 
 const AddressModal = ({ category, handleAddressModal }) => {
   //* store, pickup 구분해서 보여주면 됨
-  console.log('::::::::::::::store? pickup?', category)
   const [inputValue, setInputValue] = useState('')
   const [mapAddress, setMapAddress] = useState('')
   const [keyword, setKeyword] = useState('')
