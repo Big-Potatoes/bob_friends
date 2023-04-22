@@ -10,7 +10,6 @@ import {
   ContentInput,
   WriteLabel,
   MapWrapper,
-  SelectBox,
   WriteAlert,
   ButtonWrapper,
   AddBtn,
@@ -67,10 +66,19 @@ const Write = () => {
   // })
 
   const handleContentInput = (key) => (e) => {
-    setSingleContent({
-      ...singleContent,
-      [key]: e.target.value,
-    })
+    if (key === 'endDateTime') {
+      console.log(e)
+      const date = e
+      setSingleContent({
+        ...singleContent,
+        endDateTime: date,
+      })
+    } else {
+      setSingleContent({
+        ...singleContent,
+        [key]: e.target.value,
+      })
+    }
   }
   // tag handle functions
   const handleTagContent = (e) => {
@@ -163,6 +171,7 @@ const Write = () => {
       })
     }
   }
+  console.log('time', singleContent.endDateTime)
   return (
     <OuterWrapper>
       <Wrapper action="#" className="write__wrapper">
@@ -217,7 +226,7 @@ const Write = () => {
           </FlexBox>
           <FlexBox className="recruit_endtime__wrapper">
             <WriteLabel width={'max-content'}>모집 종료 시간</WriteLabel>
-            <Timepicker />
+            <Timepicker handleInput={handleContentInput('endDateTime')} />
           </FlexBox>
           {singleContent.deliveryPrice && singleContent.totalPeopleCount ? (
             <WriteAlert
