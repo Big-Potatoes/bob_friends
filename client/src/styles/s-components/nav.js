@@ -8,7 +8,7 @@ export const Wrapper = styled.ul`
   right: 0;
   height: 80px;
   padding: 0 10px;
-  /* background: var(--black-100); */
+  border-top: 1px solid var(--black-100);
   display: flex;
   justify-content: space-around;
   align-items: center;
