@@ -11,7 +11,7 @@ export const Wrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* background: var(--black-100); */
+  box-shadow: 0px 0px 10px 0px rgba(34, 34, 34, 0.1);
   > div {
     background: var(--yellow-100);
   }
