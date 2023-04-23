@@ -34,7 +34,7 @@ export const ContentInput = styled.textarea`
 `
 export const CustomInput = styled(InputBase)`
   width: ${(props) => props.width || '150px'};
-  height: auto;
+  height: 26.5px;
   text-align: ${(props) => props.textAlign || 'start'};
 `
 export const WriteLabel = styled(InputLabel)`
@@ -57,8 +57,9 @@ export const FlexBox = styled.div`
   align-items: center;
   width: ${(props) => props.width || '100%'};
   justify-content: ${(props) => props.justify || 'space-between'};
-  margin-top: ${(props) => props.marginTop || '0'};
+  margin-bottom: ${(props) => props.marginBottom || '0'};
   min-height: ${(props) => props.minHeight || '0'};
+  position: ${(props) => props.position || ''};
 `
 export const MapWrapper = styled.div`
   width: 100%;
@@ -91,7 +92,7 @@ export const AddBtn = styled.button`
   font-weight: var(--fw-bold);
 `
 export const OrderDeleteBtn = styled.button`
-  width: 40px;
+  width: 10%;
   height: 25px;
   color: var(--black-300);
   font-size: var(--fz-xs);
@@ -100,6 +101,17 @@ export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
-  width: calc(100% - 50px);
+  margin-top: 7px;
+  width: 90%;
+`
+
+export const AddressBtn = styled.button`
+  width: 80px;
+  height: 26.5px;
+  margin-left: 5px;
+  border-radius: 5px;
+  color: white;
+  background: var(--yellow-200);
+  font-weight: var(--fw-bold);
+  font-size: var(--fz-sm);
 `
