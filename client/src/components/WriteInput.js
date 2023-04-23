@@ -11,6 +11,7 @@ const WriteInput = ({
   handleInput,
   submitInput,
   onClickFunc,
+  readOnly,
 }) => {
   return (
     <FlexBox className={`${title}__wrapper`}>
@@ -31,6 +32,7 @@ const WriteInput = ({
         onChange={handleInput}
         onKeyDown={submitInput}
         onClick={onClickFunc}
+        readOnly={readOnly}
       />
     </FlexBox>
   )

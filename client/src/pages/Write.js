@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { useState } from 'react'
-// import { HiChevronDown } from 'react-icons/hi2'
 import { OuterWrapper } from '../styles/s-global/common'
 import {
   Wrapper,
@@ -9,17 +8,19 @@ import {
   TitleInput,
   ContentInput,
   WriteLabel,
-  MapWrapper,
   WriteAlert,
   ButtonWrapper,
   AddBtn,
   OrderDeleteBtn,
+  AddressBtn,
 } from '../styles/s-pages/write'
 import Select from '../components/Select'
 import WriteInput from '../components/WriteInput'
 import TagList from '../components/Tag'
 import Order from '../components/Order'
 import Timepicker from '../components/Timepicker'
+import MapContainer from '../components/MapContainer'
+import AddressModal from '../components/AddressModal'
 const Write = () => {
   //* api 보내는 데이터 기준 구조
   const [singleContent, setSingleContent] = useState({
@@ -32,6 +33,7 @@ const Write = () => {
     deliveryPrice: '',
     tags: [],
     storeLocation: {
+      locationDescription: '',
       address: '',
       latitude: 0,
       longitude: 0,
@@ -52,22 +54,10 @@ const Write = () => {
     ],
   })
   const [tagContent, setTagContent] = useState('')
-  // const [storeLocation, setStoreLocation] = useState({
-  //   address: '',
-  //   latitude: 0,
-  //   longitude: 0,
-  // })
-  // const [pickupLocation, setPickupLocation] = useState({
-  //   locationDescription: '',
-  //   address: '',
-  //   latitude: 0,
-  //   longitude: 0,
-  //   images: [],
-  // })
-
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalCategory, setModalCategory] = useState('')
   const handleContentInput = (key) => (e) => {
     if (key === 'endDateTime') {
-      console.log(e)
       const date = e
       setSingleContent({
         ...singleContent,
@@ -125,14 +115,12 @@ const Write = () => {
     })
   }
   const addOrder = (e) => {
-    const updateList = [
-      ...singleContent.order,
-      {
-        menu: '',
-        quantity: '',
-        price: '',
-      },
-    ]
+    const newOrder = {
+      menu: '',
+      quantity: '',
+      price: '',
+    }
+    const updateList = [...singleContent.order, newOrder]
     setSingleContent({
       ...singleContent,
       order: updateList,
@@ -148,30 +136,38 @@ const Write = () => {
     })
   }
   // address handle function
-  const handleAddressInput = (category, key) => (e) => {
+  const handleAddressModal = (key) => (e) => {
+    e.preventDefault()
+    setModalCategory(key)
+    setModalOpen(!modalOpen)
+  }
+  const handleAddressInput = (key, value) => {
     //* category -> store / pickup
     // key -> address, latitude, longitude
-    if (category === 'store') {
-      const updatestore = {
+    if (key === 'store') {
+      const updateStore = {
         ...singleContent.storeLocation,
-        [key]: e.target.value,
+        ...value,
       }
       setSingleContent({
         ...singleContent,
-        storeLocation: updatestore,
+        storeLocation: updateStore,
       })
-    } else if (category === 'pickup') {
-      const updatestore = {
-        ...singleContent.storeLocation,
-        [key]: e.target.value,
-      }
-      setSingleContent({
-        ...singleContent,
-        storeLocation: updatestore,
-      })
+      return
     }
+    const updatePickup = {
+      ...singleContent.pickupLocation,
+      ...value,
+    }
+    setSingleContent({
+      ...singleContent,
+      pickupLocation: updatePickup,
+    })
   }
-  console.log('time', singleContent.endDateTime)
+
+  //todo: 첫 렌더링 후 -> order 추가 -> 자동 재렌더링 원인 파악 해야함
+  // console.log(':::::::::', singleContent.order)
+  console.log('write page::::::::', singleContent.storeLocation)
   return (
     <OuterWrapper>
       <Wrapper action="#" className="write__wrapper">
@@ -217,7 +213,8 @@ const Write = () => {
               모집 인원
             </WriteLabel>
             <Select
-              className="recruit_people__selet"
+              className="recruit_people__select"
+              id="recruit_people"
               min={2}
               max={10}
               defaultValue={'모집 인원 선택'}
@@ -299,23 +296,63 @@ const Write = () => {
           </ButtonWrapper>
         </InputContainer>
         <InputContainer className="store__container">
-          <WriteInput
-            title={'store_address'}
-            value={'지점 정보'}
-            inputWidth={'100%'}
-            onChange={handleContentInput('title')}
+          <FlexBox className="address_input__wrapper">
+            <WriteInput
+              title={'store_address'}
+              value={'지점 정보'}
+              inputWidth={'100%'}
+              inputValue={singleContent.storeLocation.locationDescription}
+              onClickFunc={() => setModalOpen(!modalOpen)}
+              readOnly={true}
+            />
+            <AddressBtn
+              className="store_btn"
+              onClick={handleAddressModal('store')}
+            >
+              주소 찾기
+            </AddressBtn>
+          </FlexBox>
+          <MapContainer
+            className="store__map"
+            mapid="store__map"
+            isHalf={true}
+            marginTop={'10px'}
+            address={singleContent.storeLocation.address}
           />
-          <MapWrapper className="store__map">지점 지도</MapWrapper>
         </InputContainer>
         <InputContainer className="pickup__container">
-          <WriteInput
-            title={'pickup_address'}
-            value={'픽업 정보'}
-            inputWidth={'100%'}
+          <FlexBox className="address_input_wrapper">
+            <WriteInput
+              title={'pickup_address'}
+              value={'픽업 정보'}
+              inputWidth={'100%'}
+              inputValue={singleContent.pickupLocation.locationDescription}
+              onClickFunc={handleAddressModal('pickup')}
+              readOnly={true}
+            />
+            <AddressBtn
+              className="pickup_btn"
+              onClick={handleAddressModal('pickup')}
+            >
+              주소 찾기
+            </AddressBtn>
+          </FlexBox>
+          <MapContainer
+            className="pickup__map"
+            mapid="pickup__map"
+            isHalf={true}
+            marginTop={'10px'}
+            address={singleContent.pickupLocation.address}
           />
-          <MapWrapper className="pickup_address">픽업 지도</MapWrapper>
         </InputContainer>
       </Wrapper>
+      {modalOpen ? (
+        <AddressModal
+          category={modalCategory}
+          handleAddressModal={handleAddressModal}
+          handleAddressInput={handleAddressInput}
+        />
+      ) : null}
     </OuterWrapper>
   )
 }
