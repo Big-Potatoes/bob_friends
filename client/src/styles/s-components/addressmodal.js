@@ -20,5 +20,4 @@ export const MainWrapper = styled.div`
   height: calc(100% - 25px);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react'
 import WriteInput from './WriteInput'
 import { ModalBack, ModalContent } from '../styles/s-global/common'
@@ -9,8 +8,8 @@ import {
 } from '../styles/s-components/addressmodal'
 import MapContainer from './MapContainer'
 
-const AddressModal = ({ category, handleAddressModal }) => {
-  //* store, pickup 구분해서 보여주면 됨
+const AddressModal = ({ category, handleAddressModal, handleAddressInput }) => {
+  //* store, pickup 구분해서 보여주기
   const [inputValue, setInputValue] = useState('')
   const [mapAddress, setMapAddress] = useState('')
   const [keyword, setKeyword] = useState('')
@@ -53,6 +52,8 @@ const AddressModal = ({ category, handleAddressModal }) => {
             keyword={keyword}
             marginTop={'10px'}
             isModal={true}
+            handleAddressInput={handleAddressInput}
+            handleAddressModal={handleAddressModal}
           />
         </MainWrapper>
       </ModalContent>
