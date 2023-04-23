@@ -12,6 +12,8 @@ export const Wrapper = styled.header`
   align-items: center;
   justify-content: space-between;
   box-shadow: 0px 0px 10px 0px rgba(34, 34, 34, 0.1);
+  background: white;
+  z-index: 10;
   > div {
     background: var(--yellow-100);
   }
