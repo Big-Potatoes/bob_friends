@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom'
 import {
   LogoWrapper,
   MenuWrapper,
+  ListWrapper,
   Wrapper,
   MenuTitle,
 } from '../styles/s-components/nav'
@@ -29,8 +30,8 @@ const Nav = () => {
     )
   }
   return (
-    <nav className="nav">
-      <Wrapper className="menu_container">
+    <Wrapper className="nav">
+      <ListWrapper className="menu_container">
         <Tab
           path={'/rullet'}
           name={'menu_1 rullet'}
@@ -60,8 +61,8 @@ const Nav = () => {
           menu={'친구 목록'}
           icon={<HiOutlineChatBubbleLeftRight />}
         />
-      </Wrapper>
-    </nav>
+      </ListWrapper>
+    </Wrapper>
   )
 }
 
