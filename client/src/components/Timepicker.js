@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react'
 import Datepicker from 'react-datepicker'
 import dayjs from 'dayjs'
@@ -18,10 +17,11 @@ const Timepicker = ({ handleInput }) => {
   const now = dayjs()
   const currentTime = now.toDate()
   const [selectedTime, setSelectedTime] = useState(currentTime)
+  const currentHour = now.get('hour')
+
   const getMaxTime = () => {
     // 5시간을 더한 시간이 00시 이하 -> 그대로
     // 5시간을 더해서 00시 이상으로 넘어가면 23:30
-    const currentHour = now.get('hour')
     let maxTime = 0
 
     if (currentHour + 5 > 24) {
@@ -51,6 +51,7 @@ const Timepicker = ({ handleInput }) => {
         maxTime={getMaxTime()}
         timeIntervals={30}
         timeCaption="Time"
+        disabled={currentHour < 8}
         dateFormat={'aa h:mm'}
       />
     </Wrapper>
