@@ -1,14 +1,18 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-export const Wrapper = styled.ul`
+export const Wrapper = styled.nav`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: 80px;
-  padding: 0 10px;
+  padding: 10px 10px;
+  background: white;
   border-top: 1px solid var(--black-100);
+  z-index: 10;
+`
+export const ListWrapper = styled.ul`
   display: flex;
   justify-content: space-around;
   align-items: center;
