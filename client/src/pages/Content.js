@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../api/api'
 import { FaQuestionCircle } from 'react-icons/fa'
 import { OuterWrapper, Tag } from '../styles/s-global/common'
@@ -24,8 +25,10 @@ import {
   PickupImages,
   ImageBox,
 } from '../styles/s-pages/content'
+import { getContent } from '../store/contentStore';
 import PeopleCountPie from '../components/PeopleCountPie'
 import MapContainer from '../components/MapContainer'
+import PartyModal from '../components/PartyModal'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/ko'
@@ -33,17 +36,18 @@ dayjs.extend(relativeTime)
 dayjs.locale('ko')
 
 const Content = () => {
-  const { id } = useParams()
-  const [contentData, setContentData] = useState([])
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const contentData = useSelector(state=>state.contentSlice.contentData)
   const [recruitEnd, setRecruitEnd] = useState(false)
-
+  const [partyModalOpen, setPartyModalOpen]=useState(false)
   const currentTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
   console.log(contentData)
+  console.log(currentTime)
+  console.log(currentTime >= contentData.endDateTime)
   useEffect(() => {
-    api.get(`/recruit-content/${id}`).then((res) => {
-      setContentData(res.data)
-      if (currentTime >= res.data.endDateTime) setRecruitEnd(true)
-    })
+    dispatch(getContent(id))
+    if (currentTime >= contentData.endDateTime) setRecruitEnd(true)
   }, [])
   const unitCalc = (amount) => {
     amount = Math.floor(amount)
@@ -102,7 +106,7 @@ const Content = () => {
                 <span className="notice">
                   {recruitEnd
                     ? '모집완료'
-                    : dayjs(contentData.endDateTime).toNow()}
+                    : dayjs(contentData.endDateTime).fromNow()}
                 </span>
               </p>
             </ContentFieldBox>
@@ -119,7 +123,7 @@ const Content = () => {
             </ContentFieldBox>
           </div>
           <ContentBtnWrap>
-            <ContentBtn paddingRight={`10px`}>
+            <ContentBtn paddingRight={`10px`} onClick={()=>setPartyModalOpen(!partyModalOpen)}>
               참여하기
               <img src="/assets/spoon.png" alt="참여하기" />
             </ContentBtn>
@@ -195,7 +199,9 @@ const Content = () => {
           </ContentAreaBox>
         </ContentArea>
       </div>
-      <div className="modal-wrap"></div>
+      <div className="modal-wrap">
+        <PartyModal contentData={contentData} partyModalOpen={partyModalOpen} setPartyModalOpen={setPartyModalOpen} />
+      </div>
     </OuterWrapper>
   )
 }
