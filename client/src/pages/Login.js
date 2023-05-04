@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../api/api'
@@ -7,10 +6,8 @@ import {
   InputLabel,
   InputBase,
   ButtonBase,
-  ModalWrap,
   ModalBack,
   ModalContent,
-  ButtonSm,
 } from '../styles/s-global/common'
 import {
   Wrapper,
@@ -36,7 +33,6 @@ const Login = () => {
     account: '',
     password: '',
   })
-
   const handleUserInfo = (key) => (e) => {
     const data = {
       ...userInfo,
@@ -81,6 +77,7 @@ const Login = () => {
     return true
   }
   const submitUserInfo = (e) => {
+    //* loginInfo로 토큰 발행받는 api 요청 보내기
     e.preventDefault()
     if (validateUserInfo(userInfo.account, userInfo.password)) {
       api
