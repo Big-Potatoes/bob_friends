@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-
-const initValue = {
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { api } from '../api/api'
+const initialState = {
   isLogin: false,
   userInfo: {
     id: 0,
@@ -9,17 +9,32 @@ const initValue = {
     localCertification: false,
   },
 }
+export const getUserInfo = createAsyncThunk(
+  'userSlice/getUserInfo',
+  async () => {
+    try {
+      const response = await api.get('/auth/current')
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
 export const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    value: initValue,
-  },
+  initialState,
   reducers: {
     login: (state, action) => {
-      state.value = action.payload
+      state.isLogin = action.payload
     },
-    getuserInfo: (state, action) => {
-      state.value = action.payload
+    getUserInfo: (state, action) => {
+      state.userInfo = action.payload
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(getUserInfo.fulfilled, (state, action) => {
+      state.userInfo = action.payload.data
+    })
+  },
 })
+export const { login } = userSlice.actions

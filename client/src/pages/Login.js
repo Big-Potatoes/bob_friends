@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { login } from '../store/userStore'
+import { useDispatch } from 'react-redux'
 import { api } from '../api/api'
 import {
   OuterWrapper,
@@ -22,6 +24,7 @@ import {
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [modalOpen, setModalOpen] = useState(false)
   const [apiRes, setApiRes] = useState(false)
   const [errorMessage, setErrorMessage] = useState({
@@ -84,8 +87,10 @@ const Login = () => {
         .post('/auth/sign-in', userInfo)
         .then((res) => {
           if (res.status === 200) {
+            // todo: store에 isLogin 상태 업데이트하기
             localStorage.setItem('Bob_accessToken', res.data.accessToken)
             localStorage.setItem('Bob_refreshToken', res.data.refreshToken)
+            dispatch(login(true))
             setApiRes(true)
             setErrorMessage({
               ...errorMessage,
