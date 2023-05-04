@@ -5,6 +5,7 @@ import {
   ButtonWrapper,
   CloseButton,
   MainWrapper,
+  MapWrapper,
 } from '../styles/s-components/addressmodal'
 import MapContainer from './MapContainer'
 
@@ -46,15 +47,16 @@ const AddressModal = ({ category, handleAddressModal, handleAddressInput }) => {
             handleInput={handleAddress}
             submitInput={submitAddress}
           />
-          <MapContainer
-            mapid={`address`}
-            address={mapAddress}
-            keyword={keyword}
-            marginTop={'10px'}
-            isModal={true}
-            handleAddressInput={handleAddressInput}
-            handleAddressModal={handleAddressModal}
-          />
+          <MapWrapper className="map_wrapper">
+            <MapContainer
+              mapid={`address`}
+              address={mapAddress}
+              keyword={keyword}
+              isModal={true}
+              handleAddressInput={handleAddressInput}
+              handleAddressModal={handleAddressModal}
+            />
+          </MapWrapper>
         </MainWrapper>
       </ModalContent>
     </ModalBack>
