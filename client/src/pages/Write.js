@@ -13,6 +13,7 @@ import {
   AddBtn,
   OrderDeleteBtn,
   AddressBtn,
+  MapWrapper,
 } from '../styles/s-pages/write'
 import Select from '../components/Select'
 import WriteInput from '../components/WriteInput'
@@ -21,6 +22,7 @@ import Order from '../components/Order'
 import Timepicker from '../components/Timepicker'
 import MapContainer from '../components/MapContainer'
 import AddressModal from '../components/AddressModal'
+import { useEffect } from 'react'
 const Write = () => {
   //* api 보내는 데이터 기준 구조
   const [singleContent, setSingleContent] = useState({
@@ -56,6 +58,7 @@ const Write = () => {
   const [tagContent, setTagContent] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
   const [modalCategory, setModalCategory] = useState('')
+
   const handleContentInput = (key) => (e) => {
     if (key === 'endDateTime') {
       const date = e
@@ -312,13 +315,13 @@ const Write = () => {
               주소 찾기
             </AddressBtn>
           </FlexBox>
-          <MapContainer
-            className="store__map"
-            mapid="store__map"
-            isHalf={true}
-            marginTop={'10px'}
-            address={singleContent.storeLocation.address}
-          />
+          <MapWrapper>
+            <MapContainer
+              className="store__map"
+              mapid="store__map"
+              address={singleContent.storeLocation.address}
+            />
+          </MapWrapper>
         </InputContainer>
         <InputContainer className="pickup__container">
           <FlexBox className="address_input_wrapper">
@@ -337,13 +340,13 @@ const Write = () => {
               주소 찾기
             </AddressBtn>
           </FlexBox>
-          <MapContainer
-            className="pickup__map"
-            mapid="pickup__map"
-            isHalf={true}
-            marginTop={'10px'}
-            address={singleContent.pickupLocation.address}
-          />
+          <MapWrapper>
+            <MapContainer
+              className="pickup__map"
+              mapid="pickup__map"
+              address={singleContent.pickupLocation.address}
+            />
+          </MapWrapper>
         </InputContainer>
       </Wrapper>
       {modalOpen ? (

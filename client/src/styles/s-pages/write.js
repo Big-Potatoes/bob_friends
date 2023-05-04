@@ -63,9 +63,10 @@ export const FlexBox = styled.div`
 `
 export const MapWrapper = styled.div`
   width: 100%;
-  height: 100px;
-  margin-top: 5px;
-  background-color: green;
+  height: 150px;
+  /* overflow: hidden; */
+  margin-top: 10px;
+  border: 3px solid blue;
 `
 export const SelectBox = styled.select`
   width: 150px;
