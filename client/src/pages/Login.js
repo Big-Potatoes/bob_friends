@@ -1,16 +1,15 @@
-/* eslint-disable */
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { login } from '../store/userStore'
+import { useDispatch } from 'react-redux'
 import { api } from '../api/api'
 import {
   OuterWrapper,
   InputLabel,
   InputBase,
   ButtonBase,
-  ModalWrap,
   ModalBack,
   ModalContent,
-  ButtonSm,
 } from '../styles/s-global/common'
 import {
   Wrapper,
@@ -25,6 +24,7 @@ import {
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [modalOpen, setModalOpen] = useState(false)
   const [apiRes, setApiRes] = useState(false)
   const [errorMessage, setErrorMessage] = useState({
@@ -36,7 +36,6 @@ const Login = () => {
     account: '',
     password: '',
   })
-
   const handleUserInfo = (key) => (e) => {
     const data = {
       ...userInfo,
@@ -81,14 +80,17 @@ const Login = () => {
     return true
   }
   const submitUserInfo = (e) => {
+    //* loginInfo로 토큰 발행받는 api 요청 보내기
     e.preventDefault()
     if (validateUserInfo(userInfo.account, userInfo.password)) {
       api
         .post('/auth/sign-in', userInfo)
         .then((res) => {
           if (res.status === 200) {
+            // todo: store에 isLogin 상태 업데이트하기
             localStorage.setItem('Bob_accessToken', res.data.accessToken)
             localStorage.setItem('Bob_refreshToken', res.data.refreshToken)
+            dispatch(login(true))
             setApiRes(true)
             setErrorMessage({
               ...errorMessage,
