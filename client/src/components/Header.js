@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Wrapper, LogoContainer } from '../styles/s-components/header'
-import { getUserInfo } from '../store/userStore'
+import { login, getUserInfo } from '../store/userStore'
 //* header에 있어야 할 기능
 // center - 로고 : 클릭하면 index로 이동
 
