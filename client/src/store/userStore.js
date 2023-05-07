@@ -24,16 +24,14 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, action) => {
-      state.isLogin = action.payload
-    },
-    getUserInfo: (state, action) => {
-      state.userInfo = action.payload
-    },
+    // login: (state, action) => {
+    //   state.isLogin = action.payload
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserInfo.fulfilled, (state, action) => {
       state.userInfo = action.payload.data
+      state.isLogin = true
     })
   },
 })
