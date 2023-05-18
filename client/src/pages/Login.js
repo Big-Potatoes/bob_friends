@@ -104,6 +104,7 @@ const Login = () => {
         })
         .catch((error) => {
           if (error) {
+            console.log(error)
             const status = error.response.request.status
             if (status === 401) {
               setErrorMessage({
