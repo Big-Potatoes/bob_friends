@@ -43,7 +43,7 @@ const Header = () => {
           isEdit ? (
             <p>뒤로 가기</p>
           ) : userInfo.localCertification ? (
-            <p>{`${userInfo.nickname}의 인증 지역`}</p>
+            <p>판교</p>
           ) : (
             <p>지역 인증 필요</p>
           )
