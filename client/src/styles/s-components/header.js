@@ -12,10 +12,12 @@ export const Wrapper = styled.header`
   align-items: center;
   justify-content: space-between;
   box-shadow: 0px 0px 10px 0px rgba(34, 34, 34, 0.1);
-  background: white;
+  background: var(--yellow-200);
   z-index: 10;
-  > div {
-    background: var(--yellow-100);
+  font-size: var(--fz-sm);
+  color: white;
+  p {
+    font-weight: var(--fw-bold);
   }
 `
 export const LogoContainer = styled.h1`
@@ -24,4 +26,5 @@ export const LogoContainer = styled.h1`
   transform: translateX(-50%);
   font-family: var(--font-ganpan);
   font-size: var(--fz-lg);
+  color: var(--black-300);
 `
