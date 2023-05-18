@@ -31,6 +31,7 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getUserInfo.fulfilled, (state, action) => {
       state.userInfo = action.payload.data
+      state.isLogin = true
     })
   },
 })
