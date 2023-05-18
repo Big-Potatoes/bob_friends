@@ -118,6 +118,7 @@ const Write = () => {
     })
   }
   const addOrder = (e) => {
+    e.preventDefault()
     const newOrder = {
       menu: '',
       quantity: '',
