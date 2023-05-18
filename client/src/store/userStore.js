@@ -24,9 +24,9 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // login: (state, action) => {
-    //   state.isLogin = action.payload
-    // },
+    login: (state, action) => {
+      state.isLogin = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUserInfo.fulfilled, (state, action) => {
