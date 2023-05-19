@@ -1,49 +1,16 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import {
+  MapWrapper,
+  MapBox,
+  MenuWrapper,
+  ResultTitle,
+  AlertText,
+  MenuList,
+  Pagination,
+} from '../styles/s-components/mapcontainer'
 import './../styles/s-components/MapContainer.css'
 
-const MapBox = styled.div`
-  width: 100%;
-  padding-bottom: 100%;
-  height: 0;
-  margin-top: ${(props) => props.marginTop || '0'};
-  &.halfHeight,
-  &.result {
-    padding-bottom: 50%;
-  }
-`
-const MenuWrapper = styled.div`
-  padding: 5px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
-const ResultTitle = styled.h4`
-  font-weight: var(--fw-bold);
-  padding: 5px 0;
-  text-align: center;
-`
-const AlertText = styled.p`
-  margin-top: 10px;
-  min-height: 15px;
-  text-align: center;
-  color: var(--black-200);
-`
-const MenuList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  height: 180px;
-  overflow-y: auto;
-  /* border: 1px solid red; */
-  font-size: var(--fz-sm);
-  padding: 10px;
-`
-const Pagination = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  margin-top: 20px;
-`
 const { kakao } = window
 
 const MapContainer = ({
@@ -52,13 +19,14 @@ const MapContainer = ({
   lng = 126.57066,
   address,
   keyword,
-  handleAddressInput,
   isModal = false,
-  isHalf,
-  marginTop,
+  handleAddressInput,
   handleAddressModal,
 }) => {
+  //* lat, lng 입력값이 있을 땐 그걸로 지도 출력하고
+  //* 없으면 기본 위치로 출력
   const [isValid, setIsValid] = useState(true)
+  const [isResult, setIsResult] = useState(false)
   const [latitude, setLatitude] = useState(lat)
   const [longitude, setLongitude] = useState(lng)
   useEffect(() => {
@@ -68,6 +36,8 @@ const MapContainer = ({
         setLatitude(position.coords.latitude)
         setLongitude(position.coords.longitude)
       })
+    } else {
+      alert('이 브라우저는 위치 추적을 지원하지 않습니다.')
     }
     const options = {
       center: new kakao.maps.LatLng(latitude, longitude),
@@ -76,41 +46,58 @@ const MapContainer = ({
     const map = new kakao.maps.Map(container, options)
     // 마커가 표시될 위치입니다
     const markerPosition = new kakao.maps.LatLng(latitude, longitude)
-    // 마커를 생성합니다
-    let marker = new kakao.maps.Marker({
-      position: markerPosition,
-    })
+
     const searchOptions = {
       location: markerPosition,
       radius: 5000,
     }
+    const imageSrc = '/assets/marker_current.png'
+    const imageSize = new kakao.maps.Size(30, 40)
+    const imageOption = { offset: new kakao.maps.Point(20, 40) }
+    const markerImage = new kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      imageOption
+    )
+    // 마커를 생성합니다
+    let marker = new kakao.maps.Marker({
+      position: markerPosition,
+      image: markerImage,
+    })
     // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
     let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 })
     // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map)
-    if (address) {
+    if (isValid && address) {
       setIsValid(true)
+      console.log(address)
       const geocoder = new kakao.maps.services.Geocoder()
       geocoder.addressSearch(address, function (result, status) {
         console.log(result)
         if (status === kakao.maps.services.Status.OK) {
+          setIsResult(true)
           const { address_name, building_name, x, y } = result[0]
           const coords = new kakao.maps.LatLng(y, x)
           marker = new kakao.maps.Marker({
             map,
             position: coords,
+            image: markerImage,
           })
-
           //* 빌딩 이름이 있으면 라벨 노출 -> 이름 노출 라벨 스타일 수정하기
-          if (building_name) {
-            const address = building_name || address_name
-            infowindow = new kakao.maps.InfoWindow({
-              content: `<div style="width:auto;">${address}</div>`,
-            })
-            infowindow.open(map, marker)
-          }
+          const address = building_name || address_name
+          const content = `<div class="locationLabel" style="background:var(--navy);padding:5px;font-size:var(--fz-xs);color:white;border-radius:5px;"><span>${address}</span></div>`
+          const labelPosition = new kakao.maps.LatLng(y + 10, x + 1)
+          const customOverlay = new kakao.maps.CustomOverlay({
+            position: labelPosition,
+            content,
+          })
+          infowindow = new kakao.maps.InfoWindow({
+            content: `<div style="width:max-content;height:100%;font-size:var(--fz-xs)">${address}</div>`,
+          })
+          // infowindow.open(map, marker)
 
           map.setCenter(coords)
+          customOverlay.setMap(map)
         } else {
           setIsValid(false)
         }
@@ -118,7 +105,6 @@ const MapContainer = ({
     } else if (keyword && isModal) {
       // 키워드로 장소를 검색합니다
       search(keyword, map, infowindow, searchOptions)
-      map.setLevel(2)
     }
   }, [mapid, address, keyword, latitude, longitude])
 
@@ -144,9 +130,10 @@ const MapContainer = ({
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         setIsValid(true)
+        // todo: 플래그 설정을 넣으면 검색이 안되는 이유
+        // setIsResult(true)
         // 정상적으로 검색이 완료됐으면
         // 검색 목록과 마커를 표출합니다
-        console.log(data)
         displayPlaces(data)
 
         // 페이지 번호를 표출합니다
@@ -180,8 +167,9 @@ const MapContainer = ({
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
-        bounds.extend(placePosition)
-
+        if (i <= 4) {
+          bounds.extend(placePosition)
+        }
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
@@ -267,18 +255,26 @@ const MapContainer = ({
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
     function addMarker(position, idx, title) {
-      const imageSrc =
-        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png' // 마커 이미지 url, 스프라이트 이미지를 씁니다
-      const imageSize = new kakao.maps.Size(36, 37) // 마커 이미지의 크기
-      const imgOptions = {
-        spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-        spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-        offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-      }
+      // const imageSrc =
+      //   'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png' // 마커 이미지 url, 스프라이트 이미지를 씁니다
+      // const imageSize = new kakao.maps.Size(36, 37) // 마커 이미지의 크기
+      // const imgOptions = {
+      //   spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+      //   spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+      //   offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+      // }
+      // const markerImage = new kakao.maps.MarkerImage(
+      //   imageSrc,
+      //   imageSize,
+      //   imgOptions
+      // )
+      const imageSrc = '/assets/marker.png'
+      const imageSize = new kakao.maps.Size(30, 40)
+      const imageOption = { offset: new kakao.maps.Point(20, 40) }
       const markerImage = new kakao.maps.MarkerImage(
         imageSrc,
         imageSize,
-        imgOptions
+        imageOption
       )
       const marker = new kakao.maps.Marker({
         position, // 마커의 위치
@@ -346,30 +342,29 @@ const MapContainer = ({
       }
     }
   }
-
+  console.log(isValid)
   return (
-    <div className="wrapper">
-      {!isValid ? <AlertText>검색 결과가 없습니다.</AlertText> : null}
-      <div id="menu_wrap" className="bg_white">
+    <MapWrapper className="wrapper">
+      <MapWrapper id="menu_wrap" className="bg_white">
+        {!isValid ? <AlertText>검색 결과가 없습니다.</AlertText> : null}
         <MapBox
           id={`${mapid}`}
-          className={`${
-            isValid && (isHalf || keyword || address) ? 'halfHeight' : null
-          }`}
-          marginTop={marginTop}
+          className={`
+          ${isResult ? 'result' : null}
+          ${isModal ? 'modal' : null}`}
           style={{
             width: '100%',
           }}
         ></MapBox>
-        {isModal && isValid && (keyword || address) ? (
+        {isResult && isValid ? (
           <MenuWrapper className="list">
             <ResultTitle> - 검색 결과 - </ResultTitle>
             <MenuList id="placesList"></MenuList>
             <Pagination id="pagination"></Pagination>
           </MenuWrapper>
         ) : null}
-      </div>
-    </div>
+      </MapWrapper>
+    </MapWrapper>
   )
 }
 
